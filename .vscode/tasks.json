@@ -1,0 +1,29 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Open environment directory",
+      "type": "shell",
+      "command": "code",
+      "args": ["environment", "--new-window"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "close": true
+      },
+      "group": "none"
+    },
+    {
+      "label": "Open modggly directory",
+      "type": "shell",
+      "command": "code",
+      "args": ["modggly", "--new-window"],
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "close": true
+      },
+      "group": "none"
+    }
+  ]
+}
