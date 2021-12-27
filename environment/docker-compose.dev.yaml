@@ -7,6 +7,8 @@ volumes:
     name: ${VSCODE_EXTENSIONS_VOLUME_NAME}
   node_modules:
     name: ${NODE_MODULES_VOLUME_NAME}
+  gcloud:
+    name: ${GCLOUD_VOLUME_NAME}
 
 services:
   environment:
@@ -21,8 +23,8 @@ services:
     tty: true
     volumes:
       - type: bind
-        source: .
-        target: ${WORKSPACES}
+        source: ..
+        target: ${PROJECT_ROOT}
       - type: volume
         source: bash_history
         target: /commandhistory
@@ -31,4 +33,7 @@ services:
         target: ${WORKSPACES}/node_modules
       - type: volume
         source: vscode_extensions
-        target: /home/${REMOTE_USER}/.vscode-server/extensions
+        target: ${HOME}/.vscode-server/extensions
+      - type: volume
+        source: gcloud
+        target: ${HOME}/.config/gcloud

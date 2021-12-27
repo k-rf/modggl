@@ -4,7 +4,7 @@
   "dockerComposeFile": "../docker-compose.dev.yaml",
   "service": "environment",
   "postCreateCommand": "yarn install",
-  "workspaceFolder": "/workspaces",
+  "workspaceFolder": "/workspaces/environment",
   "overrideCommand": true,
   "extensions": [
     "extr0py.vscode-relative-line-numbers",
