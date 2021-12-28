@@ -1,0 +1,27 @@
+{
+  "name": "modggly-rs-production",
+  "scripts": {
+    "up:pipeline": "pulumi up -C src/pipeline",
+    "up:staging": "pulumi up -s staging -C src/deployment",
+    "up:production": "pulumi up -s production -C src/deployment",
+    "lint": "eslint --fix --cache --ext .tsx,.ts,.js ./src",
+    "format": "prettier . --write",
+    "check-types": "tsc --project tsconfig.json --pretty --noEmit"
+  },
+  "dependencies": {
+    "@pulumi/gcp": "^5.0.0",
+    "@pulumi/pulumi": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^17.0.5",
+    "@typescript-eslint/eslint-plugin": "^5.8.0",
+    "@typescript-eslint/parser": "^5.8.0",
+    "eslint": "^8.5.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-import-resolver-typescript": "^2.5.0",
+    "eslint-plugin-import": "^2.25.3",
+    "eslint-plugin-prettier": "^4.0.0",
+    "prettier": "^2.5.1",
+    "tsconfig-paths": "^3.12.0"
+  }
+}

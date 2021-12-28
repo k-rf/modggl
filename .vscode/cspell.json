@@ -5,7 +5,15 @@
     "devcontainer.json"
   ],
   "words": [
+    "artifactregistry",
+    "cloudbuild",
+    "gcloud",
+    "integromat",
+    "linebreak",
     "modggly",
+    "Parens",
+    "poiulkjhmnbv",
+    "Prettierrc",
     "pulumi"
   ]
 }
