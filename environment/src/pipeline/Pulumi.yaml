@@ -1,0 +1,3 @@
+name: modggly-rs-pipeline
+description: The pipeline for modggly-rs
+runtime: nodejs
