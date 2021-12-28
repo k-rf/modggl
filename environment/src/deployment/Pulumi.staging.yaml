@@ -1,0 +1,3 @@
+config:
+  gcp:project: modggly-staging
+  modggly-rs:env: staging

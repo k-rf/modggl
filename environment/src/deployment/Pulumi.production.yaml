@@ -1,0 +1,3 @@
+config:
+  gcp:project: modggly
+  modggly-rs:env: production
