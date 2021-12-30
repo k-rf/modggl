@@ -1,0 +1,30 @@
+{
+  "name": "modggl",
+  "remoteUser": "modggl",
+  "dockerComposeFile": "../docker-compose.dev.yaml",
+  "service": "modggl",
+  "workspaceFolder": "/workspaces/modggl",
+  "overrideCommand": true,
+  "extensions": [
+    "extr0py.vscode-relative-line-numbers",
+    "mutantdino.resourcemonitor",
+    "eamodio.gitlens",
+    "mhutchie.git-graph",
+    "hbenl.vscode-test-explorer",
+    "swellaby.vscode-rust-test-adapter",
+    "streetsidesoftware.code-spell-checker",
+    "matklad.rust-analyzer",
+    "ms-azuretools.vscode-docker",
+    "rust-lang.rust",
+    "serayuzgur.crates",
+    "tamasfe.even-better-toml",
+    "vadimcn.vscode-lldb"
+  ],
+  "settings": {
+    "editor.defaultFormatter": "rust-lang.rust",
+    "editor.formatOnSaveMode": "modifications",
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true
+    }
+  }
+}
