@@ -17,7 +17,7 @@ RUN SNIPPET="export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhisto
     && mkdir -p /commandhistory ${HOME}/.vscode-server/extensions ${HOME}/.config/gcloud ${WORKSPACES}/node_modules \
     && touch /commandhistory/.bash_history \
     && chown -R ${USER}:${USER} /commandhistory ${HOME}/.vscode-server ${HOME}/.config ${WORKSPACES}/node_modules \
-    && echo $SNIPPET >> "${HOME}/.bashrc"
+    && echo $SNIPPET >> ${HOME}/.bashrc
 
 RUN sh -c "$(curl -fsSL https://starship.rs/install.sh)" -- --yes \
     && echo 'eval "$(starship init bash)"' >> ${HOME}/.bashrc

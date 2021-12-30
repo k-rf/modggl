@@ -14,10 +14,10 @@
       "group": "none"
     },
     {
-      "label": "Open modggly directory",
+      "label": "Open modggl directory",
       "type": "shell",
       "command": "code",
-      "args": ["modggly", "--new-window"],
+      "args": ["modggl", "--new-window"],
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",

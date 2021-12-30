@@ -5,15 +5,18 @@
     "devcontainer.json"
   ],
   "words": [
+    "actix",
     "artifactregistry",
     "cloudbuild",
     "gcloud",
     "integromat",
     "linebreak",
+    "modggl",
     "modggly",
     "Parens",
     "poiulkjhmnbv",
     "Prettierrc",
-    "pulumi"
+    "pulumi",
+    "usecase"
   ]
 }
