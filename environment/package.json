@@ -1,5 +1,5 @@
 {
-  "name": "modggly-rs-production",
+  "name": "modggl-production",
   "scripts": {
     "up:pipeline": "pulumi up -C src/pipeline",
     "up:staging": "pulumi up -s staging -C src/deployment",

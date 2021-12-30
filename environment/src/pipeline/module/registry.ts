@@ -14,8 +14,8 @@ export const createRegistry = ({ productName, region }: Props) => {
     format: 'Docker',
     location: region,
     repositoryId: registryName,
-    description: 'The artifact registry for modggly',
-    project: 'modggly-pipeline',
+    description: 'The artifact registry for modggl',
+    project: 'modggl-pipeline',
   });
 
   return { registry, registryName };

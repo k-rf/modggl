@@ -68,11 +68,11 @@ export const createTrigger = ({
 
   return new gcp.cloudbuild.Trigger(triggerName, {
     name: triggerName,
-    description: 'The pipeline for modggly.',
+    description: 'The pipeline for modggl',
     tags: [PRODUCT_NAME],
     github: {
       owner: 'poiulkjhmnbv',
-      name: 'modggly-rs',
+      name: 'modggl',
       push: {
         branch: '^main$',
       },

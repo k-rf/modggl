@@ -1,6 +1,6 @@
 import * as gcp from '@pulumi/gcp';
 
-const productName = 'modggly-rs';
+const productName = 'modggl';
 
 const topic = new gcp.pubsub.Topic(productName, {
   name: productName,

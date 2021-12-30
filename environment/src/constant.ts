@@ -1,4 +1,4 @@
-export const PRODUCT_NAME = 'modggly' as const;
+export const PRODUCT_NAME = 'modggl' as const;
 export const PRODUCTION = `${PRODUCT_NAME}`;
 export const STAGING = `${PRODUCT_NAME}-staging`;
 export const PROJECT_NAME = `${PRODUCT_NAME}-pipeline`;
