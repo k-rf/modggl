@@ -1,16 +1,12 @@
-use super::{entry_end::EntryEnd, entry_start::EntryStart};
+pub use self::entry_duration::EntryDuration;
+pub use self::entry_end::EntryEnd;
+pub use self::entry_period::EntryPeriod;
+pub use self::entry_period::Props as EntryPeriodProps;
+pub use self::entry_relation::EntryRelation;
+pub use self::entry_start::EntryStart;
 
-pub struct EntryPeriod {
-    start: EntryStart,
-    end: EntryEnd,
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_should_implemented() {
-        panic!("Fail!")
-    }
-}
+mod entry_duration;
+mod entry_end;
+mod entry_period;
+mod entry_relation;
+mod entry_start;
