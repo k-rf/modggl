@@ -7,9 +7,11 @@
   "words": [
     "actix",
     "artifactregistry",
+    "chrono",
     "cloudbuild",
     "gcloud",
     "integromat",
+    "Interactor",
     "linebreak",
     "modggl",
     "modggly",
@@ -17,6 +19,7 @@
     "poiulkjhmnbv",
     "Prettierrc",
     "pulumi",
+    "rstest",
     "usecase"
   ]
 }
