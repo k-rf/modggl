@@ -1,12 +1,10 @@
-#[derive(Debug)]
+#[derive(PartialEq, Eq)]
 pub struct EntryId {
     pub value: String,
 }
 
 impl EntryId {
-    pub fn new() -> EntryId {
-        EntryId {
-            value: String::from("abc"),
-        }
+    pub fn new(value: String) -> EntryId {
+        EntryId { value }
     }
 }

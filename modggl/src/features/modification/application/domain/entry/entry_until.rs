@@ -1,12 +1,12 @@
 use chrono::{DateTime, Utc};
 
 #[derive(PartialEq, Eq, PartialOrd, Ord)]
-pub struct EntryUpdated {
+pub struct EntryUntil {
     pub value: DateTime<Utc>,
 }
 
-impl EntryUpdated {
+impl EntryUntil {
     pub fn new(value: DateTime<Utc>) -> Self {
-        EntryUpdated { value }
+        EntryUntil { value }
     }
 }

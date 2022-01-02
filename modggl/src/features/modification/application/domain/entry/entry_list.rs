@@ -5,13 +5,3 @@ pub struct EntryList {
 }
 
 impl EntryList {}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_should_implemented() {
-        panic!("Fail!")
-    }
-}
