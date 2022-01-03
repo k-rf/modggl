@@ -1,9 +1,12 @@
+use std::fmt::Error;
+
 use super::{
     entry_client::EntryClient, entry_description::EntryDescription, entry_id::EntryId,
     entry_period::EntryPeriod, entry_project::EntryProject, entry_tag_list::EntryTagList,
     entry_updated::EntryUpdated,
 };
 
+#[derive(PartialEq, Eq)]
 pub struct Entry {
     pub client: EntryClient,
     pub description: EntryDescription,
@@ -33,6 +36,18 @@ impl Entry {
             && self.description == other.description
             && self.tags == other.tags
     }
+
+    pub fn merge(&self, other: Entry) -> Result<Self, &str> {
+        Entry::new(Props {
+            client: self.client,
+            description: self.description,
+            id: self.id,
+            period: self.period,
+            project: self.project,
+            tags: self.tags,
+            updated_at: self.updated_at,
+        })
+    }
 }
 
 pub struct Props {
@@ -47,34 +62,86 @@ pub struct Props {
 
 #[cfg(test)]
 mod tests {
-    use chrono::Utc;
     use rstest::rstest;
 
-    use crate::features::modification::application::domain::entry::entry_period::EntryEnd;
-    use crate::features::modification::application::domain::entry::entry_period::EntryPeriodProps;
-    use crate::features::modification::application::domain::entry::entry_period::EntryStart;
-    use crate::features::modification::application::domain::entry::entry_tag::EntryTag;
+    use crate::features::modification::application::domain::entry::test_utils::EntryBuilder;
+    use crate::utils::date_generator;
 
     use super::*;
 
-    fn generate_entry(
-        client: String,
-        project: String,
-        description: String,
-        tags: Vec<EntryTag>,
-    ) -> Entry {
-        Entry::new(Props {
-            client: EntryClient::new(client),
-            description: EntryDescription::new(description),
-            id: EntryId::new(String::from("abc")),
-            period: EntryPeriod::new(EntryPeriodProps {
-                start: EntryStart::new(Utc::now()),
-                end: EntryEnd::new(Utc::now()),
-            }),
-            project: EntryProject::new(project),
-            tags: EntryTagList::new(tags),
-            updated_at: EntryUpdated::new(Utc::now()),
-        })
+    #[rstest(
+        a,
+        b,
+        expected,
+        case(
+            EntryBuilder::new()
+                .client("abc").project("abc").description("abc")
+                .tags(vec!["abc"])
+                .build(),
+            EntryBuilder::new()
+                .client("abc").project("abc").description("abc")
+                .tags(vec!["abc"])
+                .build(),
+            true
+        ),
+        case(
+            EntryBuilder::new()
+                .client("abc").project("abc").description("abc")
+                .tags(vec!["abc"])
+                .build(),
+            EntryBuilder::new()
+                .client("abc").project("abc").description("abc")
+                .tags(vec!["abc", "xyz"])
+                .build(),
+            false
+        ),
+        case(
+            EntryBuilder::new()
+                .client("abc").project("abc").description("abc")
+                .tags(vec!["abc"])
+                .build(),
+            EntryBuilder::new()
+                .client("abc").project("abc").description("abc")
+                .tags(vec!["xyz"])
+                .build(),
+            false
+        ),
+        case(
+            EntryBuilder::new()
+                .client("abc").project("abc").description("abc")
+                .tags(vec!["abc"])
+                .build(),
+            EntryBuilder::new()
+                .client("xyz").project("abc").description("abc")
+                .tags(vec!["xyz"])
+                .build(),
+            false
+        ),
+        case(
+            EntryBuilder::new()
+                .client("abc").project("abc").description("abc")
+                .tags(vec!["abc"])
+                .build(),
+            EntryBuilder::new()
+                .client("abc").project("xyz").description("abc")
+                .tags(vec!["abc"])
+                .build(),
+            false
+        ),
+        case(
+            EntryBuilder::new()
+                .client("abc").project("abc").description("abc")
+                .tags(vec!["abc"])
+                .build(),
+            EntryBuilder::new()
+                .client("abc").project("abc").description("xyz")
+                .tags(vec!["abc"])
+                .build(),
+            false
+        )
+    )]
+    fn test_is_same(a: Entry, b: Entry, expected: bool) {
+        assert_eq!(a.is_same(&b), expected)
     }
 
     #[rstest(
@@ -82,37 +149,21 @@ mod tests {
         b,
         expected,
         case(
-            generate_entry(String::from("abc"), String::from("abc"), String::from("abc"), vec![EntryTag::new(String::from("abc"))]),
-            generate_entry(String::from("abc"), String::from("abc"), String::from("abc"), vec![EntryTag::new(String::from("abc"))]),
-            true
+            EntryBuilder::new()
+                .start(date_generator("2000-01-01T12:00:00+00:00"))
+                .end(date_generator("2000-01-01T15:00:00+00:00"))
+                .build(),
+            EntryBuilder::new()
+                .start(date_generator("2000-01-01T16:00:00+00:00"))
+                .end(date_generator("2000-01-01T18:00:00+00:00"))
+                .build(),
+            EntryBuilder::new()
+                .start(date_generator("2000-01-01T12:00:00+00:00"))
+                .end(date_generator("2000-01-01T18:00:00+00:00"))
+                .build()
         ),
-        case(
-            generate_entry(String::from("abc"), String::from("abc"), String::from("abc"), vec![EntryTag::new(String::from("abc"))]),
-            generate_entry(String::from("abc"), String::from("abc"), String::from("abc"), vec![EntryTag::new(String::from("abc")), EntryTag::new(String::from("xyz"))]),
-            false
-        ),
-        case(
-            generate_entry(String::from("abc"), String::from("abc"), String::from("abc"), vec![EntryTag::new(String::from("abc"))]),
-            generate_entry(String::from("abc"), String::from("abc"), String::from("abc"), vec![EntryTag::new(String::from("xyz"))]),
-            false
-        ),
-        case(
-            generate_entry(String::from("abc"), String::from("abc"), String::from("abc"), vec![EntryTag::new(String::from("abc"))]),
-            generate_entry(String::from("xyz"), String::from("abc"), String::from("abc"), vec![EntryTag::new(String::from("xyz"))]),
-            false
-        ),
-        case(
-            generate_entry(String::from("abc"), String::from("abc"), String::from("abc"), vec![EntryTag::new(String::from("abc"))]),
-            generate_entry(String::from("abc"), String::from("xyz"), String::from("abc"), vec![EntryTag::new(String::from("abc"))]),
-            false
-        ),
-        case(
-            generate_entry(String::from("abc"), String::from("abc"), String::from("abc"), vec![EntryTag::new(String::from("abc"))]),
-            generate_entry(String::from("abc"), String::from("abc"), String::from("xyz"), vec![EntryTag::new(String::from("abc"))]),
-            false
-        )
     )]
-    fn test_test_be_same(a: Entry, b: Entry, expected: bool) {
-        assert!(a.is_same(&b) == expected)
+    fn test_merge(a: Entry, b: Entry, expected: Entry) {
+        assert!(a.merge(b) == Ok(expected));
     }
 }

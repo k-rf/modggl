@@ -1,5 +1,6 @@
 use super::{EntryDuration, EntryEnd, EntryRelation, EntryStart};
 
+#[derive(PartialEq, Eq)]
 pub struct EntryPeriod {
     pub start: EntryStart,
     pub end: EntryEnd,
@@ -88,7 +89,10 @@ mod tests {
             EntryStart::new(utils::date_generator("2022-01-01T09:00:00+00:00")),
             EntryEnd::new(utils::date_generator("2022-01-01T12:00:00+00:00")),
         ),
-        case( EntryStart::new(utils::date_generator("2022-01-01T09:00:00+00:00")), EntryEnd::new(utils::date_generator("2022-01-01T09:00:00+00:00")),),
+        case(
+            EntryStart::new(utils::date_generator("2022-01-01T09:00:00+00:00")),
+            EntryEnd::new(utils::date_generator("2022-01-01T09:00:00+00:00")),
+        ),
         #[should_panic]
         case(
             EntryStart::new(utils::date_generator("2022-01-01T12:00:01+00:00")),

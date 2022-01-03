@@ -4,7 +4,7 @@ use chrono::{DateTime, Utc};
 
 use super::EntryStart;
 
-#[derive(PartialEq, Eq, PartialOrd, Ord)]
+#[derive(PartialEq, Eq, PartialOrd, Ord, Copy, Clone)]
 pub struct EntryEnd {
     pub value: DateTime<Utc>,
 }
