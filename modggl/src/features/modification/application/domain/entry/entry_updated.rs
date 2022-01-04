@@ -1,6 +1,6 @@
 use chrono::{DateTime, Utc};
 
-#[derive(PartialEq, Eq, PartialOrd, Ord)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Clone, Copy)]
 pub struct EntryUpdated {
     pub value: DateTime<Utc>,
 }

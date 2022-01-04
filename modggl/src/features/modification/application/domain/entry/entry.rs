@@ -1,12 +1,14 @@
-use std::fmt::Error;
-
 use super::{
-    entry_client::EntryClient, entry_description::EntryDescription, entry_id::EntryId,
-    entry_period::EntryPeriod, entry_project::EntryProject, entry_tag_list::EntryTagList,
+    entry_client::EntryClient,
+    entry_description::EntryDescription,
+    entry_id::EntryId,
+    entry_period::{EntryEnd, EntryPeriod, EntryPeriodProps, EntryStart},
+    entry_project::EntryProject,
+    entry_tag_list::EntryTagList,
     entry_updated::EntryUpdated,
 };
 
-#[derive(PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct Entry {
     pub client: EntryClient,
     pub description: EntryDescription,
@@ -38,15 +40,33 @@ impl Entry {
     }
 
     pub fn merge(&self, other: Entry) -> Result<Self, &str> {
-        Entry::new(Props {
-            client: self.client,
-            description: self.description,
-            id: self.id,
-            period: self.period,
-            project: self.project,
-            tags: self.tags,
-            updated_at: self.updated_at,
-        })
+        if self.is_same(&other) {
+            let EntryPeriod {
+                start: self_start,
+                end: self_end,
+                ..
+            } = self.period;
+            let EntryPeriod {
+                start: other_start,
+                end: other_end,
+                ..
+            } = other.period;
+
+            Ok(Entry::new(Props {
+                client: self.client.clone(),
+                description: self.description.clone(),
+                id: self.id.clone(),
+                period: EntryPeriod::new(EntryPeriodProps {
+                    start: EntryStart::min(self_start, other_start),
+                    end: EntryEnd::max(self_end, other_end),
+                }),
+                project: self.project.clone(),
+                tags: self.tags.clone(),
+                updated_at: EntryUpdated::min(self.updated_at, other.updated_at),
+            }))
+        } else {
+            Err("Entry can not be merged")
+        }
     }
 }
 
@@ -65,7 +85,7 @@ mod tests {
     use rstest::rstest;
 
     use crate::features::modification::application::domain::entry::test_utils::EntryBuilder;
-    use crate::utils::date_generator;
+    use crate::utils;
 
     use super::*;
 
@@ -150,20 +170,108 @@ mod tests {
         expected,
         case(
             EntryBuilder::new()
-                .start(date_generator("2000-01-01T12:00:00+00:00"))
-                .end(date_generator("2000-01-01T15:00:00+00:00"))
+                .start(utils::date_generator("2000-01-01T16:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T18:00:00+00:00"))
                 .build(),
             EntryBuilder::new()
-                .start(date_generator("2000-01-01T16:00:00+00:00"))
-                .end(date_generator("2000-01-01T18:00:00+00:00"))
+                .start(utils::date_generator("2000-01-01T12:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T15:00:00+00:00"))
                 .build(),
             EntryBuilder::new()
-                .start(date_generator("2000-01-01T12:00:00+00:00"))
-                .end(date_generator("2000-01-01T18:00:00+00:00"))
+                .start(utils::date_generator("2000-01-01T12:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T18:00:00+00:00"))
                 .build()
         ),
+        case(
+            EntryBuilder::new()
+                .start(utils::date_generator("2000-01-01T12:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T15:00:00+00:00"))
+                .build(),
+            EntryBuilder::new()
+                .start(utils::date_generator("2000-01-01T16:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T18:00:00+00:00"))
+                .build(),
+            EntryBuilder::new()
+                .start(utils::date_generator("2000-01-01T12:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T18:00:00+00:00"))
+                .build()
+        ),
+        case(
+            EntryBuilder::new()
+                .start(utils::date_generator("2000-01-01T12:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T15:00:00+00:00"))
+                .build(),
+            EntryBuilder::new()
+                .start(utils::date_generator("2000-01-01T13:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T18:00:00+00:00"))
+                .build(),
+            EntryBuilder::new()
+                .start(utils::date_generator("2000-01-01T12:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T18:00:00+00:00"))
+                .build()
+        ),
+        case(
+            EntryBuilder::new()
+                .start(utils::date_generator("2000-01-01T10:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T15:00:00+00:00"))
+                .build(),
+            EntryBuilder::new()
+                .start(utils::date_generator("2000-01-01T12:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T14:00:00+00:00"))
+                .build(),
+            EntryBuilder::new()
+                .start(utils::date_generator("2000-01-01T10:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T15:00:00+00:00"))
+                .build()
+        ),
+        case(
+            EntryBuilder::new()
+                .start(utils::date_generator("2000-01-01T12:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T15:00:00+00:00"))
+                .build(),
+            EntryBuilder::new()
+                .start(utils::date_generator("2000-01-01T10:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T18:00:00+00:00"))
+                .build(),
+            EntryBuilder::new()
+                .start(utils::date_generator("2000-01-01T10:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T18:00:00+00:00"))
+                .build()
+        )
+        ::trace
     )]
     fn test_merge(a: Entry, b: Entry, expected: Entry) {
-        assert!(a.merge(b) == Ok(expected));
+        if let Ok(actual) = a.merge(b) {
+            print!("{:?}", actual);
+            assert!(actual == expected);
+        } else {
+            panic!("Fail")
+        }
+    }
+
+    #[rstest(
+        a,
+        b,
+        expected,
+        case(
+            EntryBuilder::new()
+                .project("abc")
+                .start(utils::date_generator("2000-01-01T12:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T15:00:00+00:00"))
+                .build(),
+            EntryBuilder::new()
+                .project("xyz")
+                .start(utils::date_generator("2000-01-01T16:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T18:00:00+00:00"))
+                .build(),
+            "Entry can not be merged"
+        ),
+    )]
+    fn test_merge_err(a: Entry, b: Entry, expected: &str) {
+        if let Err(actual) = a.merge(b) {
+            assert_eq!(actual, expected);
+        } else {
+            panic!("Fail")
+        }
     }
 }

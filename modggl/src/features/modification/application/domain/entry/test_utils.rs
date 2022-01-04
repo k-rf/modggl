@@ -27,8 +27,8 @@ pub struct EntryBuilder {
 
 impl EntryBuilder {
     pub fn new() -> Self {
-        let start = EntryStart::new(date_generator("2000-01-01T12:00:00+00:00"));
-        let end = EntryEnd::new(date_generator("2000-01-01T12:00:00+00:00"));
+        let start = EntryStart::new(date_generator("1970-01-01T00:00:00+00:00"));
+        let end = EntryEnd::new(date_generator("1970-01-01T00:00:00+00:00"));
 
         EntryBuilder {
             client: EntryClient::new(String::from("default client")),
@@ -94,7 +94,10 @@ impl EntryBuilder {
             client: self.client,
             description: self.description,
             id: self.id,
-            period: self.period,
+            period: EntryPeriod::new(EntryPeriodProps {
+                start: self.start,
+                end: self.end,
+            }),
             project: self.project,
             tags: self.tags,
             updated_at: self.updated_at,

@@ -1,6 +1,6 @@
 use super::entry_tag::EntryTag;
 
-#[derive(PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct EntryTagList {
     pub value: Vec<EntryTag>,
 }

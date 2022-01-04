@@ -4,7 +4,7 @@ use chrono::{DateTime, Utc};
 
 use super::EntryStart;
 
-#[derive(PartialEq, Eq, PartialOrd, Ord, Copy, Clone)]
+#[derive(Debug, PartialEq, Eq, PartialOrd, Ord, Copy, Clone)]
 pub struct EntryEnd {
     pub value: DateTime<Utc>,
 }
@@ -184,5 +184,43 @@ mod tests {
     )]
     fn test_compare(this: EntryEnd, that: EntryStart, expected: cmp::Ordering) {
         assert_eq!(this.partial_cmp(&that).unwrap(), expected)
+    }
+
+    #[rstest(
+        a,
+        b,
+        expected,
+        case(
+            EntryEnd::new(utils::date_generator("1900-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::date_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::date_generator("1900-01-01T12:00:00+00:00")),
+        ),
+        case(
+            EntryEnd::new(utils::date_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::date_generator("1900-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::date_generator("1900-01-01T12:00:00+00:00")),
+        )
+    )]
+    fn test_min(a: EntryEnd, b: EntryEnd, expected: EntryEnd) {
+        assert_eq!(EntryEnd::min(a, b), expected)
+    }
+
+    #[rstest(
+        a,
+        b,
+        expected,
+        case(
+            EntryEnd::new(utils::date_generator("1900-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::date_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::date_generator("2000-01-01T12:00:00+00:00")),
+        ),
+        case(
+            EntryEnd::new(utils::date_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::date_generator("1900-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::date_generator("2000-01-01T12:00:00+00:00")),
+        )
+    )]
+    fn test_max(a: EntryEnd, b: EntryEnd, expected: EntryEnd) {
+        assert_eq!(EntryEnd::max(a, b), expected)
     }
 }

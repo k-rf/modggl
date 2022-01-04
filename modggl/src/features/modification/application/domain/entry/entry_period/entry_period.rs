@@ -1,6 +1,6 @@
 use super::{EntryDuration, EntryEnd, EntryRelation, EntryStart};
 
-#[derive(PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct EntryPeriod {
     pub start: EntryStart,
     pub end: EntryEnd,
