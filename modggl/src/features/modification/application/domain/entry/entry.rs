@@ -39,7 +39,7 @@ impl Entry {
             && self.tags == other.tags
     }
 
-    pub fn merge(&self, other: Entry) -> Result<Self, &str> {
+    pub fn merge(&self, other: Entry) -> Result<Self, Entry> {
         if self.is_same(&other) {
             let EntryPeriod {
                 start: self_start,
@@ -65,7 +65,7 @@ impl Entry {
                 updated_at: EntryUpdated::min(self.updated_at, other.updated_at),
             }))
         } else {
-            Err("Entry can not be merged")
+            Err(other)
         }
     }
 }
@@ -264,10 +264,14 @@ mod tests {
                 .start(utils::date_generator("2000-01-01T16:00:00+00:00"))
                 .end(utils::date_generator("2000-01-01T18:00:00+00:00"))
                 .build(),
-            "Entry can not be merged"
+            EntryBuilder::new()
+                .project("xyz")
+                .start(utils::date_generator("2000-01-01T16:00:00+00:00"))
+                .end(utils::date_generator("2000-01-01T18:00:00+00:00"))
+                .build(),
         ),
     )]
-    fn test_merge_err(a: Entry, b: Entry, expected: &str) {
+    fn test_merge_err(a: Entry, b: Entry, expected: Entry) {
         if let Err(actual) = a.merge(b) {
             assert_eq!(actual, expected);
         } else {
