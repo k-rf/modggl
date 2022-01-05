@@ -1,8 +1,10 @@
 pub use self::entry::Entry;
 pub use self::entry_id::EntryId;
 pub use self::entry_list::EntryList;
+pub use self::entry_period::EntryRelation;
 pub use self::entry_since::EntrySince;
 pub use self::entry_until::EntryUntil;
+pub use self::test_utils::EntryBuilder;
 
 mod entry;
 mod entry_client;

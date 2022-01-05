@@ -8,7 +8,7 @@ use super::{
     entry_updated::EntryUpdated,
 };
 
-#[derive(Debug, PartialEq, Eq)]
+#[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Entry {
     pub client: EntryClient,
     pub description: EntryDescription,
