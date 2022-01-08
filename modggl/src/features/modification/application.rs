@@ -1,3 +1,3 @@
-mod domain;
-mod port;
+pub mod domain;
+pub mod port;
 pub mod usecase;

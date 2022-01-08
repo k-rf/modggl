@@ -1,4 +1,5 @@
 use super::domain;
+pub use toggl_repository_port::TogglRepositoryPort;
 
-pub mod entry_modified_presenter_port;
-pub mod toggl_repository_port;
+mod entry_modified_presenter_port;
+mod toggl_repository_port;
