@@ -6,6 +6,14 @@ pub struct EntryList {
 }
 
 impl EntryList {
+    pub fn new() -> Self {
+        EntryList { value: vec![] }
+    }
+
+    pub fn push(&mut self, other: Entry) {
+        self.value.insert(self.value.len() - 1, other);
+    }
+
     pub fn as_iter(&self) -> Iter<Entry> {
         self.value.iter()
     }

@@ -1,16 +1,16 @@
 use std::collections::VecDeque;
 
-use super::entry::{Entry, EntryRelation};
+use super::entry::{Entry, EntryRelation, ResultMerged};
 
 const CAPACITY: usize = 2;
 
 #[derive(Debug, PartialEq, Eq)]
-enum ResultCompared {
+pub enum ResultCompared {
     Relation(EntryRelation),
-    Merged(Entry),
+    Merged(ResultMerged),
 }
 
-struct EntryComparator {
+pub struct EntryComparator {
     value: VecDeque<Entry>,
 }
 

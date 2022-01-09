@@ -8,6 +8,12 @@ use super::{
     entry_updated::EntryUpdated,
 };
 
+#[derive(Debug, PartialEq, Eq)]
+pub struct ResultMerged {
+    pub merged: Entry,
+    pub deletable: Entry,
+}
+
 #[derive(Debug, PartialEq, Eq, Clone)]
 pub struct Entry {
     pub client: EntryClient,
@@ -39,7 +45,7 @@ impl Entry {
             && self.tags == other.tags
     }
 
-    pub fn merge(&self, other: Entry) -> Result<Self, Entry> {
+    pub fn merge(&self, other: Entry) -> Result<ResultMerged, Entry> {
         if self.is_same(&other) {
             let EntryPeriod {
                 start: self_start,
@@ -52,18 +58,21 @@ impl Entry {
                 ..
             } = other.period;
 
-            Ok(Entry::new(Props {
-                client: self.client.clone(),
-                description: self.description.clone(),
-                id: self.id.clone(),
-                period: EntryPeriod::new(EntryPeriodProps {
-                    start: EntryStart::min(self_start, other_start),
-                    end: EntryEnd::max(self_end, other_end),
+            Ok(ResultMerged {
+                merged: Entry::new(Props {
+                    client: self.client.clone(),
+                    description: self.description.clone(),
+                    id: self.id.clone(),
+                    period: EntryPeriod::new(EntryPeriodProps {
+                        start: EntryStart::min(self_start, other_start),
+                        end: EntryEnd::max(self_end, other_end),
+                    }),
+                    project: self.project.clone(),
+                    tags: self.tags.clone(),
+                    updated_at: EntryUpdated::min(self.updated_at, other.updated_at),
                 }),
-                project: self.project.clone(),
-                tags: self.tags.clone(),
-                updated_at: EntryUpdated::min(self.updated_at, other.updated_at),
-            }))
+                deletable: other,
+            })
         } else {
             Err(other)
         }

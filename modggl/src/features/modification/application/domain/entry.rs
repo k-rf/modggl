@@ -1,4 +1,5 @@
 pub use self::entry::Entry;
+pub use self::entry::ResultMerged;
 pub use self::entry_id::EntryId;
 pub use self::entry_list::EntryList;
 pub use self::entry_period::EntryRelation;

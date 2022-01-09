@@ -9,6 +9,7 @@
     "artifactregistry",
     "chrono",
     "cloudbuild",
+    "Deletable",
     "Deque",
     "gcloud",
     "integromat",

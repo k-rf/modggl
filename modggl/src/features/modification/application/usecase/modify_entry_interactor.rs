@@ -3,7 +3,11 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 
-use super::domain::entry::{Entry, EntryId, EntrySince, EntryUntil};
+use crate::features::modification;
+use crate::features::modification::application::domain::entry::{EntryList, EntryRelation};
+
+use super::domain::entry::{Entry, EntryId, EntrySince, EntryUntil, ResultMerged};
+use super::domain::{EntryComparator, ResultCompared};
 use super::port::incoming::ModifyEntryCommand;
 use super::port::incoming::ModifyEntryUsecase;
 use super::port::outgoing::TogglRepositoryPort;
@@ -19,14 +23,34 @@ impl ModifyEntryUsecase for ModifyEntryInteractor {
         let until = EntryUntil::new(command.until);
         let entries = self.toggl_repository_port.get(since, until).await;
 
-        // Todo: サイズ制限できないので、自作の Comparator が必要かも
-        let mut comparator: VecDeque<Entry> = VecDeque::with_capacity(2);
+        let mut modification_list = EntryList::new();
+        let mut deletion_list = EntryList::new();
+
+        let mut comparator = EntryComparator::new();
 
         for entry in entries.value.into_iter() {
-            comparator.push_back(entry);
+            if comparator.is_full() {
+                match comparator.compare() {
+                    ResultCompared::Merged(e) => {
+                        let ResultMerged { merged, deletable } = e;
+                        modification_list.push(merged);
+                        deletion_list.push(deletable);
+                    }
+                    ResultCompared::Relation(e) => match e {
+                        EntryRelation::Less
+                        | EntryRelation::LessOuter
+                        | EntryRelation::LessOverlap => {}
+                        EntryRelation::Greater
+                        | EntryRelation::GreaterInner
+                        | EntryRelation::GreaterOverlap => {}
+                        _ => {}
+                    },
+                }
+            } else {
+                comparator.push(entry);
+            }
         }
 
-        print!("{:?}\n", comparator.capacity());
         // self.toggl_repository_port.modify();
     }
 }
