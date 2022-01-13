@@ -9,8 +9,10 @@
     "artifactregistry",
     "chrono",
     "cloudbuild",
+    "datetime",
     "Deletable",
     "Deque",
+    "dotenv",
     "gcloud",
     "integromat",
     "Interactor",
@@ -22,6 +24,7 @@
     "Prettierrc",
     "pulumi",
     "rstest",
+    "upsert",
     "usecase"
   ]
 }
