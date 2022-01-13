@@ -28,7 +28,7 @@ impl EntryPeriod {
         }
     }
 
-    pub fn compare(&self, other: EntryPeriod) -> EntryRelation {
+    pub fn compare(&self, other: &EntryPeriod) -> EntryRelation {
         if self.start == other.start && self.end == other.end {
             return EntryRelation::Equivalent;
         }
@@ -86,22 +86,22 @@ mod tests {
         start,
         end,
         case(
-            EntryStart::new(utils::date_generator("2022-01-01T09:00:00+00:00")),
-            EntryEnd::new(utils::date_generator("2022-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::datetime_generator("2022-01-01T09:00:00+00:00")),
+            EntryEnd::new(utils::datetime_generator("2022-01-01T12:00:00+00:00")),
         ),
         case(
-            EntryStart::new(utils::date_generator("2022-01-01T09:00:00+00:00")),
-            EntryEnd::new(utils::date_generator("2022-01-01T09:00:00+00:00")),
-        ),
-        #[should_panic]
-        case(
-            EntryStart::new(utils::date_generator("2022-01-01T12:00:01+00:00")),
-            EntryEnd::new(utils::date_generator("2022-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::datetime_generator("2022-01-01T09:00:00+00:00")),
+            EntryEnd::new(utils::datetime_generator("2022-01-01T09:00:00+00:00")),
         ),
         #[should_panic]
         case(
-            EntryStart::new(utils::date_generator("2022-01-02T09:00:00+00:00")),
-            EntryEnd::new(utils::date_generator("2022-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::datetime_generator("2022-01-01T12:00:01+00:00")),
+            EntryEnd::new(utils::datetime_generator("2022-01-01T12:00:00+00:00")),
+        ),
+        #[should_panic]
+        case(
+            EntryStart::new(utils::datetime_generator("2022-01-02T09:00:00+00:00")),
+            EntryEnd::new(utils::datetime_generator("2022-01-01T12:00:00+00:00")),
         ),
     )]
     fn test_new(start: EntryStart, end: EntryEnd) {
@@ -111,23 +111,23 @@ mod tests {
     #[rstest(first, second, expected,
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryRelation::Equivalent
         ),
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
             }),
             EntryRelation::Equivalent
         ),
@@ -135,23 +135,23 @@ mod tests {
         // Greater
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T06:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T08:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T06:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T08:00:00+00:00")),
             }),
             EntryRelation::Greater
         ),
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T06:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T06:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
             }),
             EntryRelation::Greater
         ),
@@ -159,23 +159,23 @@ mod tests {
         // Less
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T15:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T18:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T15:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T18:00:00+00:00")),
             }),
             EntryRelation::Less
         ),
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T15:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T15:00:00+00:00")),
             }),
             EntryRelation::Less
         ),
@@ -183,23 +183,23 @@ mod tests {
         // Overlap
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T10:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T13:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T10:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T13:00:00+00:00")),
             }),
             EntryRelation::LessOverlap
         ),
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T10:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T13:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T10:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T13:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryRelation::GreaterOverlap
         ),
@@ -207,34 +207,34 @@ mod tests {
         // LessOuter
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T10:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T11:00:00+00:00")),
-            }),
-            EntryRelation::LessOuter
-        ),
-        case(
-            EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
-            }),
-            EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T10:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T11:00:00+00:00")),
             }),
             EntryRelation::LessOuter
         ),
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T10:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
+            }),
+            EntryRelation::LessOuter
+        ),
+        case(
+            EntryPeriod::new(Props {
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
+            }),
+            EntryPeriod::new(Props {
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T10:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryRelation::LessOuter
         ),
@@ -242,23 +242,23 @@ mod tests {
         // GreaterOuter
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
             }),
             EntryRelation::GreaterOuter
         ),
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T11:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T11:00:00+00:00")),
             }),
             EntryRelation::GreaterOuter
         ),
@@ -266,23 +266,23 @@ mod tests {
         // LessInner
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryRelation::LessInner
         ),
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T11:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T11:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryRelation::LessInner
         ),
@@ -290,39 +290,39 @@ mod tests {
         // GreaterInner
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T10:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T11:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T10:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T11:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
-            }),
-            EntryRelation::GreaterInner
-        ),
-        case(
-            EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T10:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
-            }),
-            EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryRelation::GreaterInner
         ),
         case(
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T10:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryPeriod::new(Props {
-                start: EntryStart::new(utils::date_generator("2022-01-15T09:00:00+00:00")),
-                end: EntryEnd::new(utils::date_generator("2022-01-15T12:00:00+00:00")),
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
+            }),
+            EntryRelation::GreaterInner
+        ),
+        case(
+            EntryPeriod::new(Props {
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
+            }),
+            EntryPeriod::new(Props {
+                start: EntryStart::new(utils::datetime_generator("2022-01-15T09:00:00+00:00")),
+                end: EntryEnd::new(utils::datetime_generator("2022-01-15T12:00:00+00:00")),
             }),
             EntryRelation::GreaterInner
         ),
     )]
     fn test_compare(first: EntryPeriod, second: EntryPeriod, expected: EntryRelation) {
-        assert_eq!(first.compare(second), expected)
+        assert_eq!(first.compare(&second), expected)
     }
 }

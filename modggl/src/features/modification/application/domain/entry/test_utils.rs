@@ -1,6 +1,6 @@
 use chrono::{DateTime, Utc};
 
-use crate::utils::date_generator;
+use crate::utils::datetime_generator;
 
 use super::{
     entry_client::EntryClient,
@@ -27,8 +27,8 @@ pub struct EntryBuilder {
 
 impl EntryBuilder {
     pub fn new() -> Self {
-        let start = EntryStart::new(date_generator("1970-01-01T00:00:00+00:00"));
-        let end = EntryEnd::new(date_generator("1970-01-01T00:00:00+00:00"));
+        let start = EntryStart::new(datetime_generator("1970-01-01T00:00:00+00:00"));
+        let end = EntryEnd::new(datetime_generator("1970-01-01T00:00:00+00:00"));
 
         EntryBuilder {
             client: EntryClient::new(String::from("default client")),
@@ -39,7 +39,7 @@ impl EntryBuilder {
             project: EntryProject::new(String::from("default project")),
             start,
             tags: EntryTagList::new(vec![]),
-            updated_at: EntryUpdated::new(date_generator("2000-01-01T12:00:00+00:00")),
+            updated_at: EntryUpdated::new(datetime_generator("2000-01-01T12:00:00+00:00")),
         }
     }
 

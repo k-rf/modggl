@@ -1,4 +1,4 @@
-pub use entry_comparator::{EntryComparator, ResultCompared};
+pub use entry_reviser::{EntryReviser, ResultCompared, ReviserStatus};
 
 pub mod entry;
-mod entry_comparator;
+mod entry_reviser;
