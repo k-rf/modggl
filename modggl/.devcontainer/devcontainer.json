@@ -18,13 +18,15 @@
     "rust-lang.rust",
     "serayuzgur.crates",
     "tamasfe.even-better-toml",
-    "vadimcn.vscode-lldb"
+    "vadimcn.vscode-lldb",
   ],
   "settings": {
     "editor.defaultFormatter": "rust-lang.rust",
     "editor.formatOnSaveMode": "modifications",
     "editor.codeActionsOnSave": {
       "source.fixAll": true
-    }
+    },
+    "rust-client.engine": "rls",
+    "rust-analyzer.cargo.allFeatures": true
   }
 }
