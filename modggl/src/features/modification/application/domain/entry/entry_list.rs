@@ -1,28 +1,31 @@
 use super::Entry;
-use std::slice::Iter;
 
 pub struct EntryList {
     pub value: Vec<Entry>,
 }
 
 impl EntryList {
-    pub fn new() -> Self {
-        EntryList { value: vec![] }
+    pub fn new(value: Vec<Entry>) -> Self {
+        EntryList { value }
     }
 
-    pub fn push(&mut self, other: Entry) {
-        self.value.insert(self.value.len() - 1, other);
+    pub fn len(&self) -> usize {
+        self.value.len()
     }
 
-    pub fn as_iter(&self) -> Iter<Entry> {
-        self.value.iter()
+    pub fn insert(&mut self, other: Entry) {
+        self.value.insert(self.value.len(), other);
     }
-}
 
-impl Iterator for EntryList {
-    type Item = Entry;
-
-    fn next(&mut self) -> Option<Self::Item> {
-        (*self).next()
+    pub fn upsert(&mut self, other: Entry) {
+        match self.value.iter().position(|e| e.id == other.id) {
+            Some(i) => {
+                self.value.remove(i);
+                self.value.insert(i, other);
+            }
+            None => {
+                self.insert(other);
+            }
+        }
     }
 }

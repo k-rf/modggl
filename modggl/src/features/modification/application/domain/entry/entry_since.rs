@@ -1,12 +1,16 @@
-use chrono::{DateTime, Utc};
+use chrono::{Date, Utc};
 
 #[derive(PartialEq, Eq, PartialOrd, Ord)]
 pub struct EntrySince {
-    pub value: DateTime<Utc>,
+    pub value: Date<Utc>,
 }
 
 impl EntrySince {
-    pub fn new(value: DateTime<Utc>) -> Self {
+    pub fn new(value: Date<Utc>) -> Self {
         EntrySince { value }
+    }
+
+    pub fn to_string(&self) -> String {
+        self.value.format("%Y-%m-%d").to_string()
     }
 }

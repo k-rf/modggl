@@ -1,11 +1,16 @@
-pub use self::entry::Entry;
-pub use self::entry::Props as EntryProps;
-pub use self::entry::ResultMerged;
+pub use self::entry::{Entry, Props as EntryProps, ResultMerged};
+pub use self::entry_client::EntryClient;
+pub use self::entry_description::EntryDescription;
 pub use self::entry_id::EntryId;
 pub use self::entry_list::EntryList;
 pub use self::entry_period::EntryRelation;
+pub use self::entry_period::{EntryDuration, EntryEnd, EntryPeriod, EntryPeriodProps, EntryStart};
+pub use self::entry_project::EntryProject;
 pub use self::entry_since::EntrySince;
+pub use self::entry_tag::EntryTag;
+pub use self::entry_tag_list::EntryTagList;
 pub use self::entry_until::EntryUntil;
+pub use self::entry_updated::EntryUpdated;
 pub use self::test_utils::EntryBuilder;
 
 mod entry;

@@ -34,7 +34,7 @@ impl EntryBuilder {
             client: EntryClient::new(String::from("default client")),
             description: EntryDescription::new(String::from("default description")),
             end,
-            id: EntryId::new(String::from("default id")),
+            id: EntryId::new(9999),
             period: EntryPeriod::new(EntryPeriodProps { start, end }),
             project: EntryProject::new(String::from("default project")),
             start,
@@ -53,8 +53,8 @@ impl EntryBuilder {
         self
     }
 
-    pub fn id(mut self, value: &str) -> Self {
-        self.id = EntryId::new(String::from(value));
+    pub fn id(mut self, value: usize) -> Self {
+        self.id = EntryId::new(value);
         self
     }
 

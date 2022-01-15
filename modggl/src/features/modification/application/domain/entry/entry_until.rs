@@ -1,12 +1,16 @@
-use chrono::{DateTime, Utc};
+use chrono::{Date, Utc};
 
 #[derive(PartialEq, Eq, PartialOrd, Ord)]
 pub struct EntryUntil {
-    pub value: DateTime<Utc>,
+    pub value: Date<Utc>,
 }
 
 impl EntryUntil {
-    pub fn new(value: DateTime<Utc>) -> Self {
+    pub fn new(value: Date<Utc>) -> Self {
         EntryUntil { value }
+    }
+
+    pub fn to_string(&self) -> String {
+        self.value.format("%Y-%m-%d").to_string()
     }
 }

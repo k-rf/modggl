@@ -95,13 +95,13 @@ impl Entry {
 }
 
 pub struct Props {
-    client: EntryClient,
-    description: EntryDescription,
-    id: EntryId,
-    period: EntryPeriod,
-    project: EntryProject,
-    tags: EntryTagList,
-    updated_at: EntryUpdated,
+    pub client: EntryClient,
+    pub description: EntryDescription,
+    pub id: EntryId,
+    pub period: EntryPeriod,
+    pub project: EntryProject,
+    pub tags: EntryTagList,
+    pub updated_at: EntryUpdated,
 }
 
 #[cfg(test)]
