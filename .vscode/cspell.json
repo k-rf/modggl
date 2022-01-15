@@ -23,6 +23,7 @@
     "poiulkjhmnbv",
     "Prettierrc",
     "pulumi",
+    "reqwest",
     "rstest",
     "upsert",
     "usecase"
