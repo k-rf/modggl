@@ -1,4 +1,8 @@
 use super::application;
-pub use toggl_repository::TogglRepository;
+pub use entry_data_model::EntryDataModel;
+pub use entry_mock_toggl_repository::MockTogglRepository;
+pub use entry_toggl_repository::EntryTogglRepository;
 
-mod toggl_repository;
+mod entry_data_model;
+mod entry_mock_toggl_repository;
+mod entry_toggl_repository;

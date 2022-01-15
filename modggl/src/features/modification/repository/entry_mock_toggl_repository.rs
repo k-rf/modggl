@@ -3,66 +3,65 @@ use async_trait::async_trait;
 use crate::utils;
 
 use super::application::domain::entry::{EntryBuilder, EntryList, EntrySince, EntryUntil};
-use super::application::port::outgoing::TogglRepositoryPort;
+use super::application::port::outgoing::EntryTogglRepositoryPort;
 
 pub struct MockTogglRepository {}
 
 #[async_trait]
-impl TogglRepositoryPort for MockTogglRepository {
+impl EntryTogglRepositoryPort for MockTogglRepository {
     async fn get(&self, since: EntrySince, until: EntryUntil) -> EntryList {
-        // Todo
         EntryList {
             value: vec![
                 EntryBuilder::new()
-                    .id("a")
+                    .id(1)
                     .client("a")
                     .start(utils::datetime_generator("2000-01-01T00:00:00+00:00"))
                     .end(utils::datetime_generator("2000-01-01T00:10:00+00:00"))
                     .build(),
                 EntryBuilder::new()
-                    .id("b")
+                    .id(2)
                     .client("b")
                     .start(utils::datetime_generator("2000-01-01T00:11:00+00:00"))
                     .end(utils::datetime_generator("2000-01-01T00:25:00+00:00"))
                     .build(),
                 EntryBuilder::new()
-                    .id("bb")
+                    .id(22)
                     .client("b")
                     .start(utils::datetime_generator("2000-01-01T00:25:00+00:00"))
                     .end(utils::datetime_generator("2000-01-01T00:30:00+00:00"))
                     .build(),
                 EntryBuilder::new()
-                    .id("bbb")
+                    .id(222)
                     .client("b")
                     .start(utils::datetime_generator("2000-01-01T00:30:00+00:00"))
                     .end(utils::datetime_generator("2000-01-01T00:35:00+00:00"))
                     .build(),
                 EntryBuilder::new()
-                    .id("c")
+                    .id(3)
                     .client("c")
                     .start(utils::datetime_generator("2000-01-01T00:32:00+00:00"))
                     .end(utils::datetime_generator("2000-01-01T01:00:00+00:00"))
                     .build(),
                 EntryBuilder::new()
-                    .id("d")
+                    .id(4)
                     .client("d")
                     .start(utils::datetime_generator("2000-01-01T01:00:00+00:00"))
                     .end(utils::datetime_generator("2000-01-01T01:43:00+00:00"))
                     .build(),
                 EntryBuilder::new()
-                    .id("e")
+                    .id(5)
                     .client("e")
                     .start(utils::datetime_generator("2000-01-01T01:10:00+00:00"))
                     .end(utils::datetime_generator("2000-01-01T01:30:00+00:00"))
                     .build(),
                 EntryBuilder::new()
-                    .id("f")
+                    .id(6)
                     .client("f")
                     .start(utils::datetime_generator("2000-01-01T01:43:00+00:00"))
                     .end(utils::datetime_generator("2000-01-01T03:00:00+00:00"))
                     .build(),
                 EntryBuilder::new()
-                    .id("f")
+                    .id(6)
                     .client("f")
                     .start(utils::datetime_generator("2000-01-01T01:43:00+00:00"))
                     .end(utils::datetime_generator("2000-01-01T03:00:00+00:00"))
