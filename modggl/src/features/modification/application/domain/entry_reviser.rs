@@ -1,7 +1,7 @@
 use std::collections::VecDeque;
 
 use super::entry::{Entry, EntryRelation, ResultMerged};
-use super::EntryLogger;
+use super::EntryRelationLogger;
 
 const CAPACITY: usize = 2;
 
@@ -51,45 +51,53 @@ impl EntryReviser {
         }
     }
 
-    pub fn modify(&mut self) -> Entry {
-        let info_logger = EntryLogger(log::Level::Info);
-        let error_logger = EntryLogger(log::Level::Error);
+    pub fn modify(&mut self) -> Result<Entry, ()> {
+        let info_logger = EntryRelationLogger(log::Level::Info);
+        let error_logger = EntryRelationLogger(log::Level::Error);
 
         if !self.is_full() {
-            panic!("Can not modify");
+            panic!("Can not modify.");
         }
 
         let first = self.value.pop_front().unwrap();
         let second = self.value.pop_front().unwrap();
 
         if first.is_same(&second) {
-            panic!("Can not modify");
+            panic!("Can not modify.");
         }
 
         self.insert(second.clone()).unwrap();
 
         let relation = first.period.compare(&second.period);
         match relation {
-            EntryRelation::Less | EntryRelation::LessOuter | EntryRelation::LessOverlap => {
+            EntryRelation::Less => {
                 info_logger(&relation, &first, &second);
-                first.modify_period_end(second.period.start)
+                if first.period.end == second.period.start {
+                    Err(())
+                } else {
+                    Ok(first.modify_period_end(second.period.start))
+                }
+            }
+            EntryRelation::LessOuter | EntryRelation::LessOverlap => {
+                info_logger(&relation, &first, &second);
+                Ok(first.modify_period_end(second.period.start))
             }
             EntryRelation::Greater
             | EntryRelation::GreaterOverlap
             | EntryRelation::GreaterInner => {
                 error_logger(&relation, &first, &second);
-                panic!("Invalid order of entries");
+                panic!("Invalid order of entries.");
             }
             EntryRelation::Equivalent | EntryRelation::GreaterOuter | EntryRelation::LessInner => {
                 error_logger(&relation, &first, &second);
-                panic!("Can not determine the correct state");
+                panic!("Can not determine the correct state.");
             }
         }
     }
 
     pub fn merge(&mut self) -> Result<ResultMerged, ()> {
         if !self.is_full() {
-            panic!("Cannot merge");
+            panic!("Cannot merge entries.");
         }
 
         let first = self.value.pop_front().unwrap();
@@ -200,25 +208,6 @@ mod tests {
                 EntryBuilder::new()
                     .client("abc")
                     .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
-                    .end(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                    .build(),
-                EntryBuilder::new()
-                    .client("xyz")
-                    .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                    .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
-                    .build(),
-            ],
-            EntryBuilder::new()
-                .client("abc")
-                .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                .build(),
-        ),
-        case(
-            vec![
-                EntryBuilder::new()
-                    .client("abc")
-                    .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
                     .end(utils::datetime_generator("2000-01-01T18:00:00+00:00"))
                     .build(),
                 EntryBuilder::new()
@@ -260,6 +249,43 @@ mod tests {
             reviser.insert(entry).unwrap();
         }
 
-        assert_eq!(reviser.modify(), expected);
+        if let Ok(actual) = reviser.modify() {
+            assert_eq!(actual, expected);
+        } else {
+            panic!("Fail");
+        }
+    }
+
+    #[rstest(
+        input,
+        expected,
+        case(
+            vec![
+                EntryBuilder::new()
+                    .client("abc")
+                    .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
+                    .end(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
+                    .build(),
+                EntryBuilder::new()
+                    .client("xyz")
+                    .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
+                    .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
+                    .build(),
+            ],
+            (),
+        ),
+    )]
+    fn test_modify_err(input: Vec<Entry>, expected: ()) {
+        let mut reviser = EntryReviser::new();
+
+        for entry in input.into_iter() {
+            reviser.insert(entry).unwrap();
+        }
+
+        if let Err(actual) = reviser.modify() {
+            assert_eq!(actual, expected);
+        } else {
+            panic!("Fail");
+        }
     }
 }

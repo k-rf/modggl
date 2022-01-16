@@ -2,10 +2,10 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 
-use crate::features::modification::application::domain::entry::{EntryList, EntryRelation};
+use crate::features::modification::application::domain::entry::EntryList;
 
 use super::domain::entry::{EntrySince, EntryUntil};
-use super::domain::{EntryReviser, ReviserStatus};
+use super::domain::{ActionType, EntryLogger, EntryReviser, ReviserStatus};
 use super::port::incoming::ModifyEntryCommand;
 use super::port::incoming::ModifyEntryUsecase;
 use super::port::outgoing::EntryTogglRepositoryPort;
@@ -36,8 +36,9 @@ impl ModifyEntryUsecase for ModifyEntryInteractor {
                             continue;
                         }
 
-                        let modified = reviser.modify();
-                        modification_list.upsert(modified);
+                        if let Ok(modified) = reviser.modify() {
+                            modification_list.upsert(modified);
+                        }
                     }
                     _ => {
                         continue;
@@ -46,13 +47,19 @@ impl ModifyEntryUsecase for ModifyEntryInteractor {
             }
         }
 
+        let info_logger = EntryLogger(log::Level::Info);
+
         for entry in modification_list.value.into_iter() {
+            info_logger(&entry, ActionType::Modify);
             self.toggl_repository_port.modify(entry).await;
         }
 
         for entry in deletion_list.value.into_iter() {
+            info_logger(&entry, ActionType::Delete);
             self.toggl_repository_port.delete(entry).await;
         }
+
+        log::info!("Modification is completed.");
     }
 }
 

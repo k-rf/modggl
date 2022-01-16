@@ -9,7 +9,7 @@ fn format_datetime(dt: &DateTime<Utc>) -> String {
         .to_string()
 }
 
-pub fn logger(level: log::Level) -> impl Fn(&EntryRelation, &Entry, &Entry) {
+pub fn entry_relation_logger(level: log::Level) -> impl Fn(&EntryRelation, &Entry, &Entry) {
     move |relation: &EntryRelation, first: &Entry, second: &Entry| {
         let msg = format!(
             "{}--{}, {}--{}, {:?}",
@@ -18,6 +18,35 @@ pub fn logger(level: log::Level) -> impl Fn(&EntryRelation, &Entry, &Entry) {
             format_datetime(&second.period.start.value),
             format_datetime(&second.period.end.value),
             relation,
+        );
+
+        match level {
+            log::Level::Info => {
+                log::info!("{}", msg);
+            }
+            log::Level::Error => {
+                log::error!("{}", msg);
+            }
+            _ => (),
+        }
+    }
+}
+
+#[derive(Debug)]
+pub enum ActionType {
+    Modify,
+    Delete,
+}
+
+pub fn entry_logger(level: log::Level) -> impl Fn(&Entry, ActionType) {
+    move |entry: &Entry, action: ActionType| {
+        let msg = format!(
+            "{}, {}, {}--{}, {:?}",
+            entry.client.value,
+            entry.project.value,
+            format_datetime(&entry.period.start.value),
+            format_datetime(&entry.period.end.value),
+            action
         );
 
         match level {

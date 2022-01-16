@@ -1,4 +1,6 @@
-pub use entry_logger::logger as EntryLogger;
+pub use entry_logger::{
+    entry_logger as EntryLogger, entry_relation_logger as EntryRelationLogger, ActionType,
+};
 pub use entry_reviser::{EntryReviser, ResultCompared, ReviserStatus};
 
 pub mod entry;

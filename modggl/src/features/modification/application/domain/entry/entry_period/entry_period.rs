@@ -24,7 +24,7 @@ impl EntryPeriod {
 
     fn validate(&self) {
         if self.duration.value < 0 {
-            panic!("EntryStart <= EntryEnd");
+            panic!("Should be EntryStart <= EntryEnd.");
         }
     }
 
@@ -65,7 +65,7 @@ impl EntryPeriod {
             return EntryRelation::GreaterInner;
         }
 
-        panic!("Cannot compare");
+        panic!("Cannot compare.");
     }
 }
 
