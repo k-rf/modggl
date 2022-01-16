@@ -14,8 +14,7 @@ pub struct ResultCompared {
 
 pub enum ReviserStatus {
     Full,
-    Empty,
-    Any,
+    NotEmpty,
 }
 
 pub struct EntryReviser {
@@ -46,7 +45,7 @@ impl EntryReviser {
             if self.is_full() {
                 Ok(ReviserStatus::Full)
             } else {
-                Ok(ReviserStatus::Any)
+                Ok(ReviserStatus::NotEmpty)
             }
         }
     }

@@ -9,10 +9,6 @@ impl EntryList {
         EntryList { value }
     }
 
-    pub fn len(&self) -> usize {
-        self.value.len()
-    }
-
     pub fn insert(&mut self, other: Entry) {
         self.value.insert(self.value.len(), other);
     }

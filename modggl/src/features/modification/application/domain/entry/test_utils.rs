@@ -13,6 +13,7 @@ use super::{
     Entry, EntryId,
 };
 
+#[allow(dead_code)]
 pub struct EntryBuilder {
     client: EntryClient,
     description: EntryDescription,
@@ -25,6 +26,7 @@ pub struct EntryBuilder {
     updated_at: EntryUpdated,
 }
 
+#[allow(dead_code)]
 impl EntryBuilder {
     pub fn new() -> Self {
         let start = EntryStart::new(datetime_generator("1970-01-01T00:00:00+00:00"));

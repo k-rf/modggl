@@ -9,8 +9,4 @@ impl EntryUntil {
     pub fn new(value: Date<Utc>) -> Self {
         EntryUntil { value }
     }
-
-    pub fn to_string(&self) -> String {
-        self.value.format("%Y-%m-%d").to_string()
-    }
 }

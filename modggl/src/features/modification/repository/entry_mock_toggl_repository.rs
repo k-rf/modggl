@@ -9,7 +9,7 @@ pub struct MockTogglRepository {}
 
 #[async_trait]
 impl EntryTogglRepositoryPort for MockTogglRepository {
-    async fn get(&self, since: EntrySince, until: EntryUntil) -> EntryList {
+    async fn get(&self, _since: EntrySince, _until: EntryUntil) -> EntryList {
         EntryList {
             value: vec![
                 EntryBuilder::new()
