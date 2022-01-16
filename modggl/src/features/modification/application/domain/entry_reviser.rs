@@ -1,6 +1,7 @@
 use std::collections::VecDeque;
 
 use super::entry::{Entry, EntryRelation, ResultMerged};
+use super::EntryLogger;
 
 const CAPACITY: usize = 2;
 
@@ -51,6 +52,9 @@ impl EntryReviser {
     }
 
     pub fn modify(&mut self) -> Entry {
+        let info_logger = EntryLogger(log::Level::Info);
+        let error_logger = EntryLogger(log::Level::Error);
+
         if !self.is_full() {
             panic!("Can not modify");
         }
@@ -64,11 +68,22 @@ impl EntryReviser {
 
         self.insert(second.clone()).unwrap();
 
-        match first.period.compare(&second.period) {
+        let relation = first.period.compare(&second.period);
+        match relation {
             EntryRelation::Less | EntryRelation::LessOuter | EntryRelation::LessOverlap => {
+                info_logger(&relation, &first, &second);
                 first.modify_period_end(second.period.start)
             }
-            _ => panic!("{:?} -- {:?}: Invalid order", first, second),
+            EntryRelation::Greater
+            | EntryRelation::GreaterOverlap
+            | EntryRelation::GreaterInner => {
+                error_logger(&relation, &first, &second);
+                panic!("Invalid order of entries");
+            }
+            EntryRelation::Equivalent | EntryRelation::GreaterOuter | EntryRelation::LessInner => {
+                error_logger(&relation, &first, &second);
+                panic!("Can not determine the correct state");
+            }
         }
     }
 

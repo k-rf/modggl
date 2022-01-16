@@ -1,6 +1,6 @@
 use std::cmp;
 
-use chrono::{DateTime, Utc};
+use chrono::{DateTime, FixedOffset, Utc};
 
 use super::EntryEnd;
 

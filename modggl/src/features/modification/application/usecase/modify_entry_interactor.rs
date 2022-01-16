@@ -1,19 +1,17 @@
-use std::collections::VecDeque;
 use std::sync::Arc;
 
 use async_trait::async_trait;
 
-use crate::features::modification;
 use crate::features::modification::application::domain::entry::{EntryList, EntryRelation};
 
-use super::domain::entry::{Entry, EntryId, EntrySince, EntryUntil, ResultMerged};
-use super::domain::{EntryComparator, ResultCompared};
+use super::domain::entry::{EntrySince, EntryUntil};
+use super::domain::{EntryReviser, ReviserStatus};
 use super::port::incoming::ModifyEntryCommand;
 use super::port::incoming::ModifyEntryUsecase;
-use super::port::outgoing::TogglRepositoryPort;
+use super::port::outgoing::EntryTogglRepositoryPort;
 
 pub struct ModifyEntryInteractor {
-    pub toggl_repository_port: Arc<dyn TogglRepositoryPort + Sync + Send>,
+    pub toggl_repository_port: Arc<dyn EntryTogglRepositoryPort + Sync + Send>,
 }
 
 #[async_trait]
@@ -23,34 +21,32 @@ impl ModifyEntryUsecase for ModifyEntryInteractor {
         let until = EntryUntil::new(command.until);
         let entries = self.toggl_repository_port.get(since, until).await;
 
-        let mut modification_list = EntryList::new();
-        let mut deletion_list = EntryList::new();
+        let mut modification_list = EntryList::new(vec![]);
+        let mut deletion_list = EntryList::new(vec![]);
 
-        let mut comparator = EntryComparator::new();
+        let mut reviser = EntryReviser::new();
 
         for entry in entries.value.into_iter() {
-            if comparator.is_full() {
-                match comparator.compare() {
-                    ResultCompared::Merged(e) => {
-                        let ResultMerged { merged, deletable } = e;
-                        modification_list.push(merged);
-                        deletion_list.push(deletable);
+            if let Ok(e) = reviser.insert(entry) {
+                match e {
+                    ReviserStatus::Full => {
+                        if let Ok(e) = reviser.merge() {
+                            modification_list.upsert(e.merged);
+                            deletion_list.upsert(e.deletable);
+                            continue;
+                        }
+
+                        let modified = reviser.modify();
+                        modification_list.upsert(modified);
                     }
-                    ResultCompared::Relation(e) => match e {
-                        EntryRelation::Less
-                        | EntryRelation::LessOuter
-                        | EntryRelation::LessOverlap => {}
-                        EntryRelation::Greater
-                        | EntryRelation::GreaterInner
-                        | EntryRelation::GreaterOverlap => {}
-                        _ => {}
-                    },
+                    _ => {
+                        continue;
+                    }
                 }
-            } else {
-                comparator.push(entry);
             }
         }
 
+        // Todo
         // self.toggl_repository_port.modify();
     }
 }
@@ -60,22 +56,28 @@ mod tests {
     use tokio;
 
     use crate::features::modification::application::port::incoming::ModifyEntryCommand;
-    use crate::features::modification::repository::TogglRepository;
+    use crate::features::modification::repository::EntryTogglRepository;
+    use crate::services::LoggerService;
     use crate::utils;
 
     use super::*;
 
     #[tokio::test]
     async fn test_modify_entry() {
+        LoggerService::init();
+        dotenv::from_filename(".env.local").ok();
+
         let interactor = ModifyEntryInteractor {
-            toggl_repository_port: Arc::new(TogglRepository {}),
+            toggl_repository_port: Arc::new(EntryTogglRepository::new()),
         };
 
         interactor
             .execute(ModifyEntryCommand {
-                since: utils::date_generator("2000-01-01T00:00:00+00:00"),
-                until: utils::date_generator("2000-01-01T00:00:00+00:00"),
+                since: utils::date_generator("2022-02-01"),
+                until: utils::date_generator("2022-02-11"),
             })
             .await;
+
+        assert!(true)
     }
 }
