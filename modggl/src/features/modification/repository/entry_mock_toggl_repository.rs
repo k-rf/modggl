@@ -2,7 +2,7 @@ use async_trait::async_trait;
 
 use crate::utils;
 
-use super::application::domain::entry::{EntryBuilder, EntryList, EntrySince, EntryUntil};
+use super::application::domain::entry::{Entry, EntryBuilder, EntryList, EntrySince, EntryUntil};
 use super::application::port::outgoing::EntryTogglRepositoryPort;
 
 pub struct MockTogglRepository {}
@@ -69,6 +69,6 @@ impl EntryTogglRepositoryPort for MockTogglRepository {
             ],
         }
     }
-    async fn modify(&self) {}
-    async fn delete(&self) {}
+    async fn modify(&self, _value: Entry) {}
+    async fn delete(&self, _value: Entry) {}
 }

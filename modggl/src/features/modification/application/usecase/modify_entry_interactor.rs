@@ -46,8 +46,13 @@ impl ModifyEntryUsecase for ModifyEntryInteractor {
             }
         }
 
-        // Todo
-        // self.toggl_repository_port.modify();
+        for entry in modification_list.value.into_iter() {
+            self.toggl_repository_port.modify(entry).await;
+        }
+
+        for entry in deletion_list.value.into_iter() {
+            self.toggl_repository_port.delete(entry).await;
+        }
     }
 }
 

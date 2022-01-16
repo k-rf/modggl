@@ -6,13 +6,18 @@ use url::Url;
 use crate::services::env_service;
 use crate::utils;
 
-use super::application::domain::entry::{EntryBuilder, EntryList, EntrySince, EntryUntil};
+use super::application::domain::entry::{Entry, EntryList, EntrySince, EntryUntil};
 use super::application::port::outgoing::EntryTogglRepositoryPort;
-use super::EntryDataModel;
+use super::{EntryDataModel, EntryRequestModel};
 
 #[derive(Debug, Deserialize)]
 pub struct GetResponse {
     pub data: Vec<EntryDataModel>,
+}
+
+#[derive(Debug, Serialize)]
+pub struct PostRequest {
+    pub time_entry: EntryRequestModel,
 }
 
 pub struct EntryTogglRepository {
@@ -90,8 +95,40 @@ impl EntryTogglRepositoryPort for EntryTogglRepository {
         entry_list
     }
 
-    async fn modify(&self) {}
-    async fn delete(&self) {}
+    async fn modify(&self, value: Entry) {
+        let base_url =
+            |id: usize| format!("{}/{}/{}", env_service::toggl_api(), "time_entries", id);
+
+        let username = self.token.as_str();
+        let password = Some(self.token_type.as_str()); // Toggl API の仕様
+
+        let data = PostRequest {
+            time_entry: EntryRequestModel::from(&value),
+        };
+
+        self.client
+            .post(base_url(value.id.value))
+            .basic_auth(username, password)
+            .json(&data)
+            .send()
+            .await
+            .unwrap();
+    }
+
+    async fn delete(&self, value: Entry) {
+        let base_url =
+            |id: usize| format!("{}/{}/{}", env_service::toggl_api(), "time_entries", id);
+
+        let username = self.token.as_str();
+        let password = Some(self.token_type.as_str()); // Toggl API の仕様
+
+        self.client
+            .delete(base_url(value.id.value))
+            .basic_auth(username, password)
+            .send()
+            .await
+            .unwrap();
+    }
 }
 
 #[cfg(test)]
