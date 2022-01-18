@@ -12,6 +12,14 @@ pub struct ResultCompared {
     pub second: Entry,
 }
 
+#[derive(Debug, PartialEq, Eq)]
+pub enum ResultModified {
+    Modified(Entry),
+    Unnecessary,
+    NotDetermine,
+    InvalidOrder,
+}
+
 pub enum ReviserStatus {
     Full,
     NotEmpty,
@@ -50,7 +58,7 @@ impl EntryReviser {
         }
     }
 
-    pub fn modify(&mut self) -> Result<Entry, ()> {
+    pub fn modify(&mut self) -> ResultModified {
         let info_logger = EntryRelationLogger(log::Level::Info);
         let error_logger = EntryRelationLogger(log::Level::Error);
 
@@ -69,27 +77,23 @@ impl EntryReviser {
 
         let relation = first.period.compare(&second.period);
         match relation {
-            EntryRelation::Less => {
+            EntryRelation::Less | EntryRelation::LessOuter | EntryRelation::LessOverlap => {
                 info_logger(&relation, &first, &second);
                 if first.period.end == second.period.start {
-                    Err(())
+                    ResultModified::Unnecessary
                 } else {
-                    Ok(first.modify_period_end(second.period.start))
+                    ResultModified::Modified(first.modify_period_end(second.period.start))
                 }
-            }
-            EntryRelation::LessOuter | EntryRelation::LessOverlap => {
-                info_logger(&relation, &first, &second);
-                Ok(first.modify_period_end(second.period.start))
             }
             EntryRelation::Greater
             | EntryRelation::GreaterOverlap
             | EntryRelation::GreaterInner => {
                 error_logger(&relation, &first, &second);
-                panic!("Invalid order of entries.");
+                ResultModified::InvalidOrder
             }
             EntryRelation::Equivalent | EntryRelation::GreaterOuter | EntryRelation::LessInner => {
                 error_logger(&relation, &first, &second);
-                panic!("Can not determine the correct state.");
+                ResultModified::NotDetermine
             }
         }
     }
@@ -248,7 +252,7 @@ mod tests {
             reviser.insert(entry).unwrap();
         }
 
-        if let Ok(actual) = reviser.modify() {
+        if let ResultModified::Modified(actual) = reviser.modify() {
             assert_eq!(actual, expected);
         } else {
             panic!("Fail");
@@ -271,20 +275,46 @@ mod tests {
                     .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
                     .build(),
             ],
-            (),
+            ResultModified::Unnecessary,
+        ),
+        case(
+            vec![
+                EntryBuilder::new()
+                    .client("xyz")
+                    .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
+                    .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
+                    .build(),
+                EntryBuilder::new()
+                    .client("abc")
+                    .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
+                    .end(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
+                    .build(),
+            ],
+            ResultModified::InvalidOrder,
+        ),
+        case(
+            vec![
+                EntryBuilder::new()
+                    .client("abc")
+                    .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
+                    .end(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
+                    .build(),
+                EntryBuilder::new()
+                    .client("xyz")
+                    .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
+                    .end(utils::datetime_generator("2000-01-01T17:00:00+00:00"))
+                    .build(),
+            ],
+            ResultModified::NotDetermine,
         ),
     )]
-    fn test_modify_err(input: Vec<Entry>, expected: ()) {
+    fn test_modify_err(input: Vec<Entry>, expected: ResultModified) {
         let mut reviser = EntryReviser::new();
 
         for entry in input.into_iter() {
             reviser.insert(entry).unwrap();
         }
 
-        if let Err(actual) = reviser.modify() {
-            assert_eq!(actual, expected);
-        } else {
-            panic!("Fail");
-        }
+        assert_eq!(reviser.modify(), expected);
     }
 }

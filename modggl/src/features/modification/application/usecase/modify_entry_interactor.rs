@@ -2,10 +2,8 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 
-use crate::features::modification::application::domain::entry::EntryList;
-
-use super::domain::entry::{EntrySince, EntryUntil};
-use super::domain::{ActionType, EntryLogger, EntryReviser, ReviserStatus};
+use super::domain::entry::{EntryList, EntrySince, EntryUntil};
+use super::domain::{ActionType, EntryLogger, EntryReviser, ResultModified, ReviserStatus};
 use super::port::incoming::ModifyEntryCommand;
 use super::port::incoming::ModifyEntryUsecase;
 use super::port::outgoing::EntryTogglRepositoryPort;
@@ -36,8 +34,13 @@ impl ModifyEntryUsecase for ModifyEntryInteractor {
                             continue;
                         }
 
-                        if let Ok(modified) = reviser.modify() {
-                            modification_list.upsert(modified);
+                        match reviser.modify() {
+                            ResultModified::Modified(modified) => {
+                                modification_list.upsert(modified)
+                            }
+                            // TODO: Presenter を実装し、外部に通知できるようにする
+                            // 修正中にエラーパターンが出てきたら、ここで Presenter を呼び出す
+                            _ => (),
                         }
                     }
                     _ => {
@@ -59,6 +62,8 @@ impl ModifyEntryUsecase for ModifyEntryInteractor {
             self.toggl_repository_port.delete(entry).await;
         }
 
+        // TODO: Presenter を実装し、外部に通知できるようにする
+        // 成功した場合はここで通知するようにする
         log::info!("Modification is completed.");
     }
 }
