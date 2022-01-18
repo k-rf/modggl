@@ -7,7 +7,7 @@ use crate::services::env_service;
 use crate::utils;
 
 use super::application::domain::entry::{Entry, EntryList, EntrySince, EntryUntil};
-use super::application::port::outgoing::EntryTogglRepositoryPort;
+use super::application::port::outgoing::EntryRepositoryPort;
 use super::{EntryDataModel, EntryRequestModel};
 
 #[derive(Debug, Deserialize)]
@@ -41,7 +41,7 @@ impl EntryTogglRepository {
 }
 
 #[async_trait]
-impl EntryTogglRepositoryPort for EntryTogglRepository {
+impl EntryRepositoryPort for EntryTogglRepository {
     async fn get(&self, since: EntrySince, until: EntryUntil) -> EntryList {
         let base_url = format!("{}/{}", env_service::report_api(), "details");
         let divided = utils::date_divider(since.value, until.value);
@@ -144,7 +144,7 @@ mod tests {
         dotenv::from_filename(".env.local").ok();
 
         let repository = EntryTogglRepository::new();
-        let res = repository
+        repository
             .get(
                 EntrySince::new(date_generator("2022-01-15")),
                 EntryUntil::new(date_generator("2022-01-31")),

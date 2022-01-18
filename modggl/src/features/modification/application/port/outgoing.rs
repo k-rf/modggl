@@ -1,5 +1,8 @@
+pub use self::entry_modified_output_data::EntryModifiedOutputData;
+pub use self::entry_modified_presenter_port::EntryModifiedPresenterPort;
+pub use self::entry_repository_port::EntryRepositoryPort;
 use super::domain;
-pub use toggl_repository_port::EntryTogglRepositoryPort;
 
+mod entry_modified_output_data;
 mod entry_modified_presenter_port;
-mod toggl_repository_port;
+mod entry_repository_port;

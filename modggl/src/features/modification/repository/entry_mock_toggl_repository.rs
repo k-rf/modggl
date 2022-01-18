@@ -3,12 +3,12 @@ use async_trait::async_trait;
 use crate::utils;
 
 use super::application::domain::entry::{Entry, EntryBuilder, EntryList, EntrySince, EntryUntil};
-use super::application::port::outgoing::EntryTogglRepositoryPort;
+use super::application::port::outgoing::EntryRepositoryPort;
 
 pub struct MockTogglRepository {}
 
 #[async_trait]
-impl EntryTogglRepositoryPort for MockTogglRepository {
+impl EntryRepositoryPort for MockTogglRepository {
     async fn get(&self, _since: EntrySince, _until: EntryUntil) -> EntryList {
         EntryList {
             value: vec![
