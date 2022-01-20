@@ -113,8 +113,8 @@ mod tests {
 
         interactor
             .execute(ModifyEntryCommand {
-                since: utils::date_generator("2022-02-01"),
-                until: utils::date_generator("2022-02-11"),
+                since: utils::generate_date("2022-02-01"),
+                until: utils::generate_date("2022-02-11"),
             })
             .await;
 

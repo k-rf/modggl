@@ -37,12 +37,12 @@ impl EntryDataModel {
             description: EntryDescription::new(self.description.clone()),
             id: EntryId::new(self.id),
             period: EntryPeriod::new(EntryPeriodProps {
-                start: EntryStart::new(utils::datetime_generator(self.start.as_str())),
-                end: EntryEnd::new(utils::datetime_generator(self.end.as_str())),
+                start: EntryStart::new(utils::generate_datetime(self.start.as_str())),
+                end: EntryEnd::new(utils::generate_datetime(self.end.as_str())),
             }),
             project: EntryProject::new(self.project.clone()),
             tags: EntryTagList::new(tags.into_iter().map(|e| EntryTag::new(e)).collect()),
-            updated_at: EntryUpdated::new(utils::datetime_generator(self.updated.as_str())),
+            updated_at: EntryUpdated::new(utils::generate_datetime(self.updated.as_str())),
         })
     }
 }

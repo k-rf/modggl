@@ -62,13 +62,13 @@ mod tests {
         that,
         expected,
         case(
-            EntryEnd::new(utils::datetime_generator("2021-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("2021-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2021-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("2021-01-01T12:00:00+00:00")),
             true
         ),
         case(
-            EntryEnd::new(utils::datetime_generator("2021-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("2022-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2021-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("2022-01-01T12:00:00+00:00")),
             false
         )
     )]
@@ -81,13 +81,13 @@ mod tests {
         that,
         expected,
         case(
-            EntryEnd::new(utils::datetime_generator("1900-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("1900-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
             true
         ),
         case(
-            EntryEnd::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
             false
         )
     )]
@@ -100,18 +100,18 @@ mod tests {
         that,
         expected,
         case(
-            EntryEnd::new(utils::datetime_generator("1900-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("1900-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
             true
         ),
         case(
-            EntryEnd::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
             true
         ),
         case(
-            EntryEnd::new(utils::datetime_generator("2100-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2100-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
             false
         )
     )]
@@ -124,13 +124,13 @@ mod tests {
         that,
         expected,
         case(
-            EntryEnd::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("1900-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("1900-01-01T12:00:00+00:00")),
             true
         ),
         case(
-            EntryEnd::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
             false
         )
     )]
@@ -143,18 +143,18 @@ mod tests {
         that,
         expected,
         case(
-            EntryEnd::new(utils::datetime_generator("2100-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2100-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
             true
         ),
         case(
-            EntryEnd::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
             true
         ),
         case(
-            EntryEnd::new(utils::datetime_generator("1900-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("1900-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
             false
         )
     )]
@@ -167,18 +167,18 @@ mod tests {
         that,
         expected,
         case(
-            EntryEnd::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
             cmp::Ordering::Equal
         ),
         case(
-            EntryEnd::new(utils::datetime_generator("1900-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("1900-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
             cmp::Ordering::Less
         ),
         case(
-            EntryEnd::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
-            EntryStart::new(utils::datetime_generator("1900-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("1900-01-01T12:00:00+00:00")),
             cmp::Ordering::Greater
         )
     )]
@@ -191,14 +191,14 @@ mod tests {
         b,
         expected,
         case(
-            EntryEnd::new(utils::datetime_generator("1900-01-01T12:00:00+00:00")),
-            EntryEnd::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
-            EntryEnd::new(utils::datetime_generator("1900-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("1900-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("1900-01-01T12:00:00+00:00")),
         ),
         case(
-            EntryEnd::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
-            EntryEnd::new(utils::datetime_generator("1900-01-01T12:00:00+00:00")),
-            EntryEnd::new(utils::datetime_generator("1900-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("1900-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("1900-01-01T12:00:00+00:00")),
         )
     )]
     fn test_min(a: EntryEnd, b: EntryEnd, expected: EntryEnd) {
@@ -210,14 +210,14 @@ mod tests {
         b,
         expected,
         case(
-            EntryEnd::new(utils::datetime_generator("1900-01-01T12:00:00+00:00")),
-            EntryEnd::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
-            EntryEnd::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("1900-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
         ),
         case(
-            EntryEnd::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
-            EntryEnd::new(utils::datetime_generator("1900-01-01T12:00:00+00:00")),
-            EntryEnd::new(utils::datetime_generator("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("1900-01-01T12:00:00+00:00")),
+            EntryEnd::new(utils::generate_datetime("2000-01-01T12:00:00+00:00")),
         )
     )]
     fn test_max(a: EntryEnd, b: EntryEnd, expected: EntryEnd) {

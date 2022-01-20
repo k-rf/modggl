@@ -1,13 +1,6 @@
-use chrono::{DateTime, Utc};
-use chrono_tz::Asia::Tokyo;
+use crate::utils::format_datetime;
 
 use super::entry::{Entry, EntryRelation};
-
-fn format_datetime(dt: &DateTime<Utc>) -> String {
-    dt.with_timezone(&Tokyo)
-        .format("%Y-%m-%dT%H:%M:%S%z")
-        .to_string()
-}
 
 pub fn entry_relation_logger(level: log::Level) -> impl Fn(&EntryRelation, &Entry, &Entry) {
     move |relation: &EntryRelation, first: &Entry, second: &Entry| {

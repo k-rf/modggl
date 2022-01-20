@@ -210,38 +210,38 @@ mod tests {
             vec![
                 EntryBuilder::new()
                     .client("abc")
-                    .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
-                    .end(utils::datetime_generator("2000-01-01T18:00:00+00:00"))
+                    .start(utils::generate_datetime("2000-01-01T09:00:00+00:00"))
+                    .end(utils::generate_datetime("2000-01-01T18:00:00+00:00"))
                     .build(),
                 EntryBuilder::new()
                     .client("xyz")
-                    .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                    .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
+                    .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                    .end(utils::generate_datetime("2000-01-01T15:00:00+00:00"))
                     .build(),
             ],
             EntryBuilder::new()
                 .client("abc")
-                .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T09:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
                 .build(),
         ),
         case(
             vec![
                 EntryBuilder::new()
                     .client("abc")
-                    .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
-                    .end(utils::datetime_generator("2000-01-01T13:00:00+00:00"))
+                    .start(utils::generate_datetime("2000-01-01T09:00:00+00:00"))
+                    .end(utils::generate_datetime("2000-01-01T13:00:00+00:00"))
                     .build(),
                 EntryBuilder::new()
                     .client("xyz")
-                    .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                    .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
+                    .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                    .end(utils::generate_datetime("2000-01-01T15:00:00+00:00"))
                     .build(),
             ],
             EntryBuilder::new()
                 .client("abc")
-                .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T09:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
                 .build(),
         ),
     )]
@@ -266,13 +266,13 @@ mod tests {
             vec![
                 EntryBuilder::new()
                     .client("abc")
-                    .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
-                    .end(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
+                    .start(utils::generate_datetime("2000-01-01T09:00:00+00:00"))
+                    .end(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
                     .build(),
                 EntryBuilder::new()
                     .client("xyz")
-                    .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                    .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
+                    .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                    .end(utils::generate_datetime("2000-01-01T15:00:00+00:00"))
                     .build(),
             ],
             ResultModified::Unnecessary,
@@ -281,13 +281,13 @@ mod tests {
             vec![
                 EntryBuilder::new()
                     .client("xyz")
-                    .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                    .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
+                    .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                    .end(utils::generate_datetime("2000-01-01T15:00:00+00:00"))
                     .build(),
                 EntryBuilder::new()
                     .client("abc")
-                    .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
-                    .end(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
+                    .start(utils::generate_datetime("2000-01-01T09:00:00+00:00"))
+                    .end(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
                     .build(),
             ],
             ResultModified::InvalidOrder,
@@ -296,16 +296,22 @@ mod tests {
             vec![
                 EntryBuilder::new()
                     .client("abc")
-                    .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
-                    .end(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
+                    .start(utils::generate_datetime("2000-01-01T09:00:00+00:00"))
+                    .end(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
                     .build(),
                 EntryBuilder::new()
                     .client("xyz")
-                    .start(utils::datetime_generator("2000-01-01T09:00:00+00:00"))
-                    .end(utils::datetime_generator("2000-01-01T17:00:00+00:00"))
+                    .start(utils::generate_datetime("2000-01-01T09:00:00+00:00"))
+                    .end(utils::generate_datetime("2000-01-01T17:00:00+00:00"))
                     .build(),
             ],
-            ResultModified::NotDetermine,
+            ResultModified::NotDetermine(
+                EntryBuilder::new()
+                    .client("abc")
+                    .start(utils::generate_datetime("2000-01-01T09:00:00+00:00"))
+                    .end(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                    .build(),
+            ),
         ),
     )]
     fn test_modify_err(input: Vec<Entry>, expected: ResultModified) {

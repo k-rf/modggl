@@ -135,7 +135,7 @@ impl EntryRepositoryPort for EntryTogglRepository {
 mod tests {
     use tokio;
 
-    use crate::utils::date_generator;
+    use crate::utils::generate_date;
 
     use super::*;
 
@@ -146,8 +146,8 @@ mod tests {
         let repository = EntryTogglRepository::new();
         repository
             .get(
-                EntrySince::new(date_generator("2022-01-15")),
-                EntryUntil::new(date_generator("2022-01-31")),
+                EntrySince::new(generate_date("2022-01-15")),
+                EntryUntil::new(generate_date("2022-01-31")),
             )
             .await;
     }

@@ -1,12 +1,19 @@
 use chrono::{Date, DateTime, Duration, NaiveDate, Utc};
+use chrono_tz::Asia::Tokyo;
 
-pub fn datetime_generator(value: &str) -> DateTime<Utc> {
+pub fn generate_datetime(value: &str) -> DateTime<Utc> {
     DateTime::<Utc>::from(DateTime::parse_from_rfc3339(value).unwrap())
 }
 
 #[allow(dead_code)]
-pub fn date_generator(value: &str) -> Date<Utc> {
+pub fn generate_date(value: &str) -> Date<Utc> {
     Date::<Utc>::from_utc(NaiveDate::parse_from_str(value, "%Y-%m-%d").unwrap(), Utc)
+}
+
+pub fn format_datetime(dt: &DateTime<Utc>) -> String {
+    dt.with_timezone(&Tokyo)
+        .format("%Y-%m-%dT%H:%M:%S%z")
+        .to_string()
 }
 
 pub fn date_divider(since: Date<Utc>, until: Date<Utc>) -> Vec<(Date<Utc>, Date<Utc>)> {
@@ -48,30 +55,30 @@ mod tests {
         until,
         expected,
         case(
-            date_generator("2022-01-01"),
-            date_generator("2022-08-31"),
-            vec![(date_generator("2022-01-01"), date_generator("2022-08-31"))],
+            generate_date("2022-01-01"),
+            generate_date("2022-08-31"),
+            vec![(generate_date("2022-01-01"), generate_date("2022-08-31"))],
         ),
         case(
-            date_generator("2022-01-01"),
-            date_generator("2022-12-31"),
-            vec![(date_generator("2022-01-01"), date_generator("2022-12-31"))],
+            generate_date("2022-01-01"),
+            generate_date("2022-12-31"),
+            vec![(generate_date("2022-01-01"), generate_date("2022-12-31"))],
         ),
         case(
-            date_generator("2022-01-01"),
-            date_generator("2023-08-31"),
+            generate_date("2022-01-01"),
+            generate_date("2023-08-31"),
             vec![
-                (date_generator("2022-01-01"), date_generator("2022-12-31")),
-                (date_generator("2023-01-01"), date_generator("2023-08-31")),
+                (generate_date("2022-01-01"), generate_date("2022-12-31")),
+                (generate_date("2023-01-01"), generate_date("2023-08-31")),
             ],
         ),
         case(
-            date_generator("2022-01-01"),
-            date_generator("2024-08-31"),
+            generate_date("2022-01-01"),
+            generate_date("2024-08-31"),
             vec![
-                (date_generator("2022-01-01"), date_generator("2022-12-31")),
-                (date_generator("2023-01-01"), date_generator("2023-12-31")),
-                (date_generator("2024-01-01"), date_generator("2024-08-31")),
+                (generate_date("2022-01-01"), generate_date("2022-12-31")),
+                (generate_date("2023-01-01"), generate_date("2023-12-31")),
+                (generate_date("2024-01-01"), generate_date("2024-08-31")),
             ],
         ),
     )]

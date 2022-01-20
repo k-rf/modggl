@@ -194,72 +194,72 @@ mod tests {
         expected,
         case(
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T16:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T18:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T16:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T18:00:00+00:00"))
                 .build(),
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T15:00:00+00:00"))
                 .build(),
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T18:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T18:00:00+00:00"))
                 .build()
         ),
         case(
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T15:00:00+00:00"))
                 .build(),
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T16:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T18:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T16:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T18:00:00+00:00"))
                 .build(),
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T18:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T18:00:00+00:00"))
                 .build()
         ),
         case(
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T15:00:00+00:00"))
                 .build(),
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T13:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T18:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T13:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T18:00:00+00:00"))
                 .build(),
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T18:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T18:00:00+00:00"))
                 .build()
         ),
         case(
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T10:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T10:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T15:00:00+00:00"))
                 .build(),
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T14:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T14:00:00+00:00"))
                 .build(),
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T10:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T10:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T15:00:00+00:00"))
                 .build()
         ),
         case(
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T15:00:00+00:00"))
                 .build(),
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T10:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T18:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T10:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T18:00:00+00:00"))
                 .build(),
             EntryBuilder::new()
-                .start(utils::datetime_generator("2000-01-01T10:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T18:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T10:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T18:00:00+00:00"))
                 .build()
         )
     )]
@@ -279,18 +279,18 @@ mod tests {
         case(
             EntryBuilder::new()
                 .project("abc")
-                .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T15:00:00+00:00"))
                 .build(),
             EntryBuilder::new()
                 .project("xyz")
-                .start(utils::datetime_generator("2000-01-01T16:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T18:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T16:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T18:00:00+00:00"))
                 .build(),
             EntryBuilder::new()
                 .project("xyz")
-                .start(utils::datetime_generator("2000-01-01T16:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T18:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T16:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T18:00:00+00:00"))
                 .build(),
         ),
     )]
@@ -309,14 +309,14 @@ mod tests {
         case(
             EntryBuilder::new()
                 .project("abc")
-                .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T15:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T15:00:00+00:00"))
                 .build(),
-            EntryStart::new(utils::datetime_generator("2000-01-01T14:00:00+00:00")),
+            EntryStart::new(utils::generate_datetime("2000-01-01T14:00:00+00:00")),
             EntryBuilder::new()
                 .project("abc")
-                .start(utils::datetime_generator("2000-01-01T12:00:00+00:00"))
-                .end(utils::datetime_generator("2000-01-01T14:00:00+00:00"))
+                .start(utils::generate_datetime("2000-01-01T12:00:00+00:00"))
+                .end(utils::generate_datetime("2000-01-01T14:00:00+00:00"))
                 .build(),
         ),
     )]
