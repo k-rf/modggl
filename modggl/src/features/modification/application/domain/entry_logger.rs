@@ -34,9 +34,7 @@ pub enum ActionType {
 pub fn entry_logger(level: log::Level) -> impl Fn(&Entry, ActionType) {
     move |entry: &Entry, action: ActionType| {
         let msg = format!(
-            "{}, {}, {}--{}, {:?}",
-            entry.client.value,
-            entry.project.value,
+            "{}--{}, {:?}",
             format_datetime(&entry.period.start.value),
             format_datetime(&entry.period.end.value),
             action
