@@ -2,6 +2,8 @@ use std::sync::Arc;
 
 use async_trait::async_trait;
 
+use crate::utils;
+
 use super::domain::entry::{EntryList, EntrySince, EntryUntil};
 use super::domain::{ActionType, EntryLogger, EntryReviser, ResultModified, ReviserStatus};
 use super::port::incoming::{ModifyEntryCommand, ModifyEntryUsecase};
@@ -16,7 +18,7 @@ pub struct ModifyEntryInteractor {
 
 #[async_trait]
 impl ModifyEntryUsecase for ModifyEntryInteractor {
-    async fn execute(&self, command: ModifyEntryCommand) {
+    async fn execute(&self, command: ModifyEntryCommand) -> String {
         let since = EntrySince::new(command.since);
         let until = EntryUntil::new(command.until);
         let entries = self.entry_repository_port.get(since, until).await;
@@ -46,21 +48,29 @@ impl ModifyEntryUsecase for ModifyEntryInteractor {
 
                             log::error!("{}", message);
                             self.entry_modified_presenter_port
-                                .execute(EntryModifiedOutputData { message })
+                                .execute(EntryModifiedOutputData {
+                                    message: message.clone(),
+                                })
                                 .await;
 
-                            return;
+                            return message;
                         }
-                        ResultModified::NotDetermine => {
-                            let message =
-                                String::from("Cannot modify an entry. Please modify it manually.");
+                        ResultModified::NotDetermine(entry) => {
+                            let message = String::new()
+                                + "Please modify an entry manually in "
+                                + &format!(
+                                    "{}.",
+                                    utils::format_datetime(&entry.period.start.value),
+                                );
 
                             log::error!("{}", message);
                             self.entry_modified_presenter_port
-                                .execute(EntryModifiedOutputData { message })
+                                .execute(EntryModifiedOutputData {
+                                    message: message.clone(),
+                                })
                                 .await;
 
-                            return;
+                            return message;
                         }
                     }
                 } else {
@@ -84,8 +94,12 @@ impl ModifyEntryUsecase for ModifyEntryInteractor {
         let message = String::from("Modification is completed.");
         log::info!("{}", message);
         self.entry_modified_presenter_port
-            .execute(EntryModifiedOutputData { message })
+            .execute(EntryModifiedOutputData {
+                message: message.clone(),
+            })
             .await;
+
+        message
     }
 }
 

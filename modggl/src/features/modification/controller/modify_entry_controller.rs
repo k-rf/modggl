@@ -21,8 +21,8 @@ impl ModifyEntryController {
             until: Utc::today() + day,
         };
 
-        self.usecase.execute(command).await;
+        let result = self.usecase.execute(command).await;
 
-        format!("Modification is completed.")
+        format!("{}", result)
     }
 }

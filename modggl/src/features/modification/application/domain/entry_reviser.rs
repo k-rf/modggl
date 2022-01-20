@@ -16,7 +16,7 @@ pub struct ResultCompared {
 pub enum ResultModified {
     Modified(Entry),
     Unnecessary,
-    NotDetermine,
+    NotDetermine(Entry),
     InvalidOrder,
 }
 
@@ -93,7 +93,7 @@ impl EntryReviser {
             }
             EntryRelation::Equivalent | EntryRelation::GreaterOuter | EntryRelation::LessInner => {
                 error_logger(&relation, &first, &second);
-                ResultModified::NotDetermine
+                ResultModified::NotDetermine(first)
             }
         }
     }
