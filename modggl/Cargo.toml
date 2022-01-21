@@ -14,6 +14,7 @@ chrono-tz = "0.6.1"
 dotenv = "0.15.0"
 env_logger = "0.9.0"
 log = "0.4.14"
+openssl = { version = "0.10", features = ["vendored"] }
 rstest = "0.12.0"
 reqwest = { version = "0.11.9", features = ["json"] }
 serde = "1"
