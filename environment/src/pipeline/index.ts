@@ -1,7 +1,17 @@
-import { REGION, PROJECT_NAME, PRODUCT_NAME } from '../constant';
+import {
+  REGION,
+  PIPELINE_PROJECT,
+  PRODUCT_NAME,
+  STAGING_PROJECT,
+  PRODUCTION_PROJECT,
+} from '../constant';
+import { EnvService } from '../lib/env.service';
 
 import { createRegistry } from './module/registry';
-import { createTrigger } from './module/trigger';
+import { Run } from './module/run';
+import { Trigger } from './module/trigger';
+
+const envService = new EnvService();
 
 const { registry, registryName } = createRegistry({
   productName: PRODUCT_NAME,
@@ -9,10 +19,26 @@ const { registry, registryName } = createRegistry({
 });
 export const registryId = registry.id;
 
-const trigger = createTrigger({
+const triggerBuilder = new Trigger(envService, {
   region: REGION,
-  projectName: PROJECT_NAME,
+  pipelineProject: PIPELINE_PROJECT,
   productName: PRODUCT_NAME,
   registryName,
 });
+
+const stagingRunBuilder = new Run(envService, {
+  environment: STAGING_PROJECT,
+  image: triggerBuilder.image,
+});
+const stagingRun = stagingRunBuilder.create();
+export const stagingRunId = stagingRun.id;
+
+const productionRunBuilder = new Run(envService, {
+  environment: PRODUCTION_PROJECT,
+  image: triggerBuilder.image,
+});
+const productionRun = productionRunBuilder.create();
+export const productionRunId = productionRun.id;
+
+const trigger = triggerBuilder.create();
 export const triggerId = trigger.id;

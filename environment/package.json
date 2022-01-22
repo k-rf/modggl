@@ -1,16 +1,17 @@
 {
   "name": "modggl-production",
   "scripts": {
-    "up:pipeline": "pulumi up -C src/pipeline",
+    "up:pipeline": "pulumi up -s pipeline -C src/pipeline",
     "up:staging": "pulumi up -s staging -C src/deployment",
     "up:production": "pulumi up -s production -C src/deployment",
     "lint": "eslint --fix --cache --ext .tsx,.ts,.js ./src",
     "format": "prettier . --write",
-    "check-types": "tsc --project tsconfig.json --pretty --noEmit"
+    "check": "tsc --project tsconfig.json --pretty --noEmit"
   },
   "dependencies": {
     "@pulumi/gcp": "^5.0.0",
-    "@pulumi/pulumi": "^3.0.0"
+    "@pulumi/pulumi": "^3.0.0",
+    "dotenv": "^14.2.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.5",
