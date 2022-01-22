@@ -20,5 +20,5 @@ async fn modify() -> impl Responder {
 }
 
 pub fn config(cfg: &mut web::ServiceConfig) {
-    cfg.service(web::resource("/").route(web::get().to(modify)));
+    cfg.service(web::resource("/").route(web::post().to(modify)));
 }
