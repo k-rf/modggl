@@ -10,6 +10,7 @@
     "chrono",
     "cloudbuild",
     "cloudrun",
+    "cloudscheduler",
     "cloudsdktool",
     "datetime",
     "Deletable",
