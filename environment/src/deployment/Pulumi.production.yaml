@@ -1,3 +1,5 @@
 config:
   gcp:project: modggl-production
   modggl:env: production
+  modggl:org:
+    secure: AAABABUY6+74Ob4BUqZW3Akg+aVcv0hegx+eNXVOcMgHrbHi

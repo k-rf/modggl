@@ -31,6 +31,7 @@ const productionRunBuilder = new Run(envService, {
 });
 const productionRun = productionRunBuilder.create();
 export const productionRunId = productionRun.id;
+export const productionRunEndpoint = productionRun.statuses[0].url;
 
 const trigger = triggerBuilder.create();
 export const triggerId = trigger.id;
