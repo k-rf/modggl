@@ -1,4 +1,4 @@
-FROM rust:1.57-bullseye
+FROM rust:1.65-bullseye
 
 ARG USER
 ARG WORKSPACES

@@ -21,9 +21,9 @@ yarn up:pipeline
 ## リソースを削除する
 
 ```bash
-pulumi destroy -s poiulkjhmnbv/modggl/staging -C src/deployment
-pulumi destroy -s poiulkjhmnbv/modggl/production -C src/deployment
-pulumi destroy -s poiulkjhmnbv/modggl-pipeline/pipeline -C src/pipeline
+pulumi destroy -s k-rf/modggl/staging -C src/deployment
+pulumi destroy -s k-rf/modggl/production -C src/deployment
+pulumi destroy -s k-rf/modggl-pipeline/pipeline -C src/pipeline
 ```
 
 ## スタックを削除する
