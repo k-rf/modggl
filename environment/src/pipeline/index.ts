@@ -2,7 +2,6 @@ import {
   REGION,
   PIPELINE_PROJECT,
   PRODUCT_NAME,
-  STAGING_PROJECT,
   PRODUCTION_PROJECT,
 } from '../constant';
 import { EnvService } from '../lib/env.service';
@@ -25,13 +24,6 @@ const triggerBuilder = new Trigger(envService, {
   productName: PRODUCT_NAME,
   registryName,
 });
-
-const stagingRunBuilder = new Run(envService, {
-  environment: STAGING_PROJECT,
-  image: triggerBuilder.image,
-});
-const stagingRun = stagingRunBuilder.create();
-export const stagingRunId = stagingRun.id;
 
 const productionRunBuilder = new Run(envService, {
   environment: PRODUCTION_PROJECT,

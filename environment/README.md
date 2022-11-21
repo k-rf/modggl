@@ -6,12 +6,6 @@
 yarn up:production
 ```
 
-## ステージング環境を構築する
-
-```bash
-yarn up:staging
-```
-
 ## パイプラインを構築する
 
 ```bash
@@ -21,7 +15,6 @@ yarn up:pipeline
 ## リソースを削除する
 
 ```bash
-pulumi destroy -s k-rf/modggl/staging -C src/deployment
 pulumi destroy -s k-rf/modggl/production -C src/deployment
 pulumi destroy -s k-rf/modggl-pipeline/pipeline -C src/pipeline
 ```
@@ -30,7 +23,6 @@ pulumi destroy -s k-rf/modggl-pipeline/pipeline -C src/pipeline
 
 ```bash
 pulumi stack rm production -C src/deployment
-pulumi stack rm staging -C src/deployment
 pulumi stack rm pipeline -C src/pipeline
 ```
 

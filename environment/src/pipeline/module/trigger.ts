@@ -2,14 +2,13 @@ import * as gcp from '@pulumi/gcp';
 import * as pulumi from '@pulumi/pulumi';
 
 import {
-  Region,
-  ProductName,
-  PipelineProject,
-  RegistryName,
   Environment,
+  PipelineProject,
   PRODUCTION_PROJECT,
-  STAGING_PROJECT,
+  ProductName,
   PRODUCT_NAME,
+  Region,
+  RegistryName,
   RUN_NAME,
 } from '../../constant';
 import { EnvService } from '../../lib/env.service';
@@ -100,7 +99,6 @@ export class Trigger {
           this.buildForTest,
           this.test,
           this.build,
-          this.deployStaging,
           this.deployProduction,
         ],
       },
@@ -147,15 +145,6 @@ export class Trigger {
         `--destination=${this.containerTag.production}`,
         `--cache=true`,
       ],
-    };
-  }
-
-  private get deployStaging(): BuildStep {
-    return {
-      id: 'Deploy staging',
-      name: this.stepName.gcloud,
-      entrypoint: 'gcloud',
-      args: this.deployArgs(STAGING_PROJECT),
     };
   }
 
