@@ -16,6 +16,7 @@
     "Deletable",
     "Deque",
     "dotenv",
+    "duronly",
     "gcloud",
     "googleapies",
     "integromat",
@@ -31,6 +32,7 @@
     "pulumi",
     "reqwest",
     "rstest",
+    "Toggl",
     "upsert",
     "usecase"
   ]

@@ -1,4 +1,5 @@
 use std::sync::Arc;
+use std::{thread, time::Duration};
 
 use async_trait::async_trait;
 
@@ -83,11 +84,15 @@ impl ModifyEntryUsecase for ModifyEntryInteractor {
 
         for entry in modification_list.value.into_iter() {
             info_logger(&entry, ActionType::Modify);
+
+            thread::sleep(Duration::from_millis(500)); // Toggl API 側の DDoS 判定を回避する
             self.entry_repository_port.modify(entry).await;
         }
 
         for entry in deletion_list.value.into_iter() {
             info_logger(&entry, ActionType::Delete);
+
+            thread::sleep(Duration::from_millis(500)); // Toggl API 側の DDoS 判定を回避する
             self.entry_repository_port.delete(entry).await;
         }
 

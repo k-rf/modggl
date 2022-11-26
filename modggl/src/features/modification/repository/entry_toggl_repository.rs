@@ -96,9 +96,6 @@ impl EntryRepositoryPort for EntryTogglRepository {
     }
 
     async fn modify(&self, value: Entry) {
-        let base_url =
-            |id: usize| format!("{}/{}/{}", env_service::toggl_api(), "time_entries", id);
-
         let username = self.token.as_str();
         let password = Some(self.token_type.as_str()); // Toggl API の仕様
 
@@ -107,28 +104,34 @@ impl EntryRepositoryPort for EntryTogglRepository {
         };
 
         self.client
-            .post(base_url(value.id.value))
+            .put(base_url(value.id.value, &self.workspace_id))
             .basic_auth(username, password)
-            .json(&data)
+            .json(&data.time_entry) // Toggl API の仕様変更によりネストが一段階浅くなった
             .send()
             .await
             .unwrap();
     }
 
     async fn delete(&self, value: Entry) {
-        let base_url =
-            |id: usize| format!("{}/{}/{}", env_service::toggl_api(), "time_entries", id);
-
         let username = self.token.as_str();
         let password = Some(self.token_type.as_str()); // Toggl API の仕様
 
         self.client
-            .delete(base_url(value.id.value))
+            .delete(base_url(value.id.value, &self.workspace_id))
             .basic_auth(username, password)
             .send()
             .await
             .unwrap();
     }
+}
+
+fn base_url(id: usize, workspace_id: &String) -> String {
+    format!(
+        "{}/workspaces/{}/time_entries/{}",
+        env_service::toggl_api(),
+        workspace_id,
+        id
+    )
 }
 
 #[cfg(test)]

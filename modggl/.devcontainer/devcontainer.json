@@ -6,19 +6,20 @@
   "workspaceFolder": "/workspaces/modggl",
   "overrideCommand": true,
   "extensions": [
-    "extr0py.vscode-relative-line-numbers",
-    "mutantdino.resourcemonitor",
     "eamodio.gitlens",
-    "mhutchie.git-graph",
+    "extr0py.vscode-relative-line-numbers",
     "hbenl.vscode-test-explorer",
-    "swellaby.vscode-rust-test-adapter",
-    "streetsidesoftware.code-spell-checker",
+    "irongeek.vscode-env",
     "matklad.rust-analyzer",
+    "mhutchie.git-graph",
     "ms-azuretools.vscode-docker",
+    "mutantdino.resourcemonitor",
+    "rust-lang.rust-analyzer",
     "serayuzgur.crates",
+    "streetsidesoftware.code-spell-checker",
+    "swellaby.vscode-rust-test-adapter",
     "tamasfe.even-better-toml",
-    "vadimcn.vscode-lldb",
-    "irongeek.vscode-env"
+    "vadimcn.vscode-lldb"
   ],
   "settings": {
     "editor.defaultFormatter": "rust-lang.rust-analyzer",
