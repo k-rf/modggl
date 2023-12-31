@@ -30,7 +30,7 @@ export class Scheduler {
         data: Buffer.from('Cloud Scheduler triggered').toString('base64'),
       },
       region: this.region,
-      schedule: '0 9 * * *',
+      schedule: '0 5 * * *',
       timeZone: 'Asia/Tokyo',
     });
   }
