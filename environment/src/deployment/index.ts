@@ -17,7 +17,7 @@ const run = new pulumi.StackReference(
   `${config.require('org')}/modggl-pipeline/pipeline`
 );
 
-const subscriptionName = 'integromat';
+const subscriptionName = 'modggl-subscription';
 const subscription = new gcp.pubsub.Subscription(subscriptionName, {
   topic: topic.id,
   name: subscriptionName,
@@ -26,6 +26,10 @@ const subscription = new gcp.pubsub.Subscription(subscriptionName, {
     // oidcToken: {
     // TODO: 自動化する（今はこの部分だけ手動で設定する）
     // }
+  },
+  deadLetterPolicy: {
+    deadLetterTopic: topic.name,
+    maxDeliveryAttempts: 5,
   },
 });
 export const result = subscription.name;
