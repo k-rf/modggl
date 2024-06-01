@@ -1,4 +1,4 @@
-FROM rust:1.65-bullseye
+FROM rust:1.78-bookworm
 
 ARG USER
 ARG WORKSPACES
