@@ -114,7 +114,7 @@ mod tests {
 
     use crate::features::modification::application::port::incoming::ModifyEntryCommand;
     use crate::features::modification::presenter::EntryModifiedSlackPresenter;
-    use crate::features::modification::repository::EntryTogglRepository;
+    use crate::features::modification::repository::MockTogglRepository;
     use crate::services::LoggerService;
     use crate::utils;
 
@@ -123,17 +123,17 @@ mod tests {
     #[tokio::test]
     async fn test_modify_entry() {
         LoggerService::init();
-        dotenv::from_filename(".env.local").ok();
+        dotenv::from_filename(".env.test.local").ok();
 
         let interactor = ModifyEntryInteractor {
-            entry_repository_port: Arc::new(EntryTogglRepository::new()),
+            entry_repository_port: Arc::new(MockTogglRepository::new()),
             entry_modified_presenter_port: Arc::new(EntryModifiedSlackPresenter::new()),
         };
 
         interactor
             .execute(ModifyEntryCommand {
-                since: utils::generate_date("2022-02-01"),
-                until: utils::generate_date("2022-02-11"),
+                since: utils::generate_datetime("2022-02-01T00:00:00+00:00"),
+                until: utils::generate_datetime("2022-02-11T00:00:00+00:00"),
             })
             .await;
 

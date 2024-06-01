@@ -133,25 +133,3 @@ fn base_url(id: usize, workspace_id: &String) -> String {
         id
     )
 }
-
-#[cfg(test)]
-mod tests {
-    use tokio;
-
-    use crate::utils::generate_date;
-
-    use super::*;
-
-    #[tokio::test]
-    async fn test_toggl_repository() {
-        dotenv::from_filename(".env.local").ok();
-
-        let repository = EntryTogglRepository::new();
-        repository
-            .get(
-                EntrySince::new(generate_date("2022-01-15")),
-                EntryUntil::new(generate_date("2022-01-31")),
-            )
-            .await;
-    }
-}

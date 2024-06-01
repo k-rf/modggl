@@ -4,7 +4,7 @@ pub use self::entry_description::EntryDescription;
 pub use self::entry_id::EntryId;
 pub use self::entry_list::EntryList;
 pub use self::entry_period::EntryRelation;
-pub use self::entry_period::{EntryDuration, EntryEnd, EntryPeriod, EntryPeriodProps, EntryStart};
+pub use self::entry_period::{EntryEnd, EntryPeriod, EntryPeriodProps, EntryStart};
 pub use self::entry_project::EntryProject;
 pub use self::entry_since::EntrySince;
 pub use self::entry_tag::EntryTag;

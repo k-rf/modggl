@@ -1,6 +1,6 @@
-use chrono::{Date, Utc};
+use chrono::{DateTime, Utc};
 
 pub struct ModifyEntryCommand {
-    pub since: Date<Utc>,
-    pub until: Date<Utc>,
+    pub since: DateTime<Utc>,
+    pub until: DateTime<Utc>,
 }
