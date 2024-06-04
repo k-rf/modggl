@@ -32,6 +32,7 @@
     "pulumi",
     "reqwest",
     "rstest",
+    "serviceaccount",
     "Toggl",
     "upsert",
     "usecase"

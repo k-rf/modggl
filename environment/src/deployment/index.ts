@@ -3,9 +3,11 @@ import * as pulumi from '@pulumi/pulumi';
 
 import { PRODUCTION_PROJECT, PRODUCT_NAME, REGION } from '../constant';
 
+import { EnvService } from '../lib/env.service';
 import { Scheduler } from './scheduler';
 
 const config = new pulumi.Config();
+const envService = new EnvService();
 
 const productName = 'modggl';
 
@@ -23,14 +25,17 @@ const subscription = new gcp.pubsub.Subscription(subscriptionName, {
   name: subscriptionName,
   pushConfig: {
     pushEndpoint: run.getOutput('productionRunEndpoint'),
-    // oidcToken: {
-    // TODO: 自動化する（今はこの部分だけ手動で設定する）
-    // }
+    oidcToken: {
+      // TODO: 自動化する（環境変数にべた書きの値を取得している）
+      serviceAccountEmail: envService.serviceAccountPushProduction.value,
+    },
   },
-  deadLetterPolicy: {
-    deadLetterTopic: topic.name,
-    maxDeliveryAttempts: 5,
+  ackDeadlineSeconds: 60,
+  retryPolicy: {
+    minimumBackoff: '10s',
+    maximumBackoff: '600s',
   },
+  messageRetentionDuration: '600s',
 });
 export const result = subscription.name;
 

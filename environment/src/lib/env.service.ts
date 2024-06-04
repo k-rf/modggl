@@ -44,6 +44,10 @@ export class EnvService {
     return this.getEnv('SERVICE_ACCOUNT_RUN_PRODUCTION');
   }
 
+  get serviceAccountPushProduction(): EnvironmentVariable {
+    return this.getEnv('SERVICE_ACCOUNT_PUSH_PRODUCTION');
+  }
+
   get serviceAccountStaging(): EnvironmentVariable {
     return this.getEnv('SERVICE_ACCOUNT_STAGING');
   }
