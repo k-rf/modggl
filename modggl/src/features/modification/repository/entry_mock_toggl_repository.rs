@@ -72,3 +72,10 @@ impl EntryRepositoryPort for MockTogglRepository {
     async fn modify(&self, _value: Entry) {}
     async fn delete(&self, _value: Entry) {}
 }
+
+impl MockTogglRepository {
+    #[cfg(test)]
+    pub fn new() -> Self {
+        MockTogglRepository {}
+    }
+}

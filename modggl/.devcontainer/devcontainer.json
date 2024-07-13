@@ -5,29 +5,32 @@
   "service": "modggl",
   "workspaceFolder": "/workspaces/modggl",
   "overrideCommand": true,
-  "extensions": [
-    "eamodio.gitlens",
-    "extr0py.vscode-relative-line-numbers",
-    "hbenl.vscode-test-explorer",
-    "irongeek.vscode-env",
-    "matklad.rust-analyzer",
-    "mhutchie.git-graph",
-    "ms-azuretools.vscode-docker",
-    "mutantdino.resourcemonitor",
-    "rust-lang.rust-analyzer",
-    "serayuzgur.crates",
-    "streetsidesoftware.code-spell-checker",
-    "swellaby.vscode-rust-test-adapter",
-    "tamasfe.even-better-toml",
-    "vadimcn.vscode-lldb"
-  ],
-  "settings": {
-    "editor.defaultFormatter": "rust-lang.rust-analyzer",
-    "editor.formatOnSaveMode": "file",
-    "editor.codeActionsOnSave": {
-      "source.fixAll": true
-    },
-    "rust-client.engine": "rls",
-    "rust-analyzer.cargo.allFeatures": true
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "eamodio.gitlens",
+        "hbenl.vscode-test-explorer",
+        "irongeek.vscode-env",
+        "matklad.rust-analyzer",
+        "mhutchie.git-graph",
+        "ms-azuretools.vscode-docker",
+        "mutantdino.resourcemonitor",
+        "rust-lang.rust-analyzer",
+        "serayuzgur.crates",
+        "streetsidesoftware.code-spell-checker",
+        "swellaby.vscode-rust-test-adapter",
+        "tamasfe.even-better-toml",
+        "vadimcn.vscode-lldb"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "rust-lang.rust-analyzer",
+        "editor.formatOnSaveMode": "file",
+        "editor.codeActionsOnSave": {
+          "source.fixAll": "explicit"
+        },
+        "rust-client.engine": "rls",
+        "rust-analyzer.cargo.allFeatures": true
+      }
+    }
   }
 }

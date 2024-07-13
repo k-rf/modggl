@@ -7,17 +7,17 @@ edition = "2021"
 
 [dependencies]
 
-actix-web = "4.0.0-beta.20"
-async-trait = "0.1.52"
-chrono = "0.4.19"
-chrono-tz = "0.6.1"
+actix-web = "4"
+async-trait = "0.1.80"
+chrono = "0.4.38"
+chrono-tz = "0.9.0"
 dotenv = "0.15.0"
-env_logger = "0.9.0"
-log = "0.4.14"
-openssl = { version = "0.10", features = ["vendored"] }
-rstest = "0.12.0"
-reqwest = { version = "0.11.9", features = ["json"] }
-serde = "1"
+env_logger = "0.11.3"
+log = "0.4.21"
+openssl = { version = "0.10.64", features = ["vendored"] }
+rstest = "0.20.0"
+reqwest = { version = "0.12.4", features = ["json"] }
+serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-tokio = { version = "1.15.0", features = ["full"] }
-url = "2.2.2"
+tokio = { version = "1.38.0", features = ["full"] }
+url = "2.5.0"

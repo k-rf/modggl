@@ -17,8 +17,8 @@ impl ModifyEntryController {
         let day = Duration::days(1);
 
         let command = ModifyEntryCommand {
-            since: Utc::today() - week,
-            until: Utc::today() + day,
+            since: Utc::now() - week,
+            until: Utc::now() + day,
         };
 
         let result = self.usecase.execute(command).await;
