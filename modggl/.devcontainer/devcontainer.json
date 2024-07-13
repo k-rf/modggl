@@ -9,7 +9,6 @@
     "vscode": {
       "extensions": [
         "eamodio.gitlens",
-        "extr0py.vscode-relative-line-numbers",
         "hbenl.vscode-test-explorer",
         "irongeek.vscode-env",
         "matklad.rust-analyzer",

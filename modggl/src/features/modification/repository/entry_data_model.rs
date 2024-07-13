@@ -22,10 +22,10 @@ pub struct EntryDataModel {
     pub project_hex_color: String,
     pub is_billable: bool,
     pub tags: Vec<String>,
-    pub tid: Option<usize>,   // 今のプランでは使っていない
-    pub task: Option<()>,     // 今のプランでは使っていない
-    pub billable: Option<()>, // 今のプランでは使っていない
-    pub cur: Option<()>,      // 今のプランでは使っていない
+    pub tid: Option<usize>,      // 今のプランでは使っていない
+    pub task: Option<()>,        // 今のプランでは使っていない
+    pub billable: Option<usize>, // 今のプランでは使っていない
+    pub cur: Option<String>,     // 今のプランでは使っていない
 }
 
 impl EntryDataModel {
